@@ -39,6 +39,23 @@
     --card:#FFFFFF;
     --line:#EDE3DC;
     --shadow:0 6px 22px rgba(140,60,80,.10);
+    /* — 語意色票（淺色） — */
+    --t-gold:#FBF3DC; --t-gold2:#F6E9C4; --t-gold3:#F4E2BE; --t-gold4:#FBF0D8;
+    --t-green:#E5F0E8; --t-mint:#E7F1ED;
+    --t-warm:#F2EBE5; --t-warm2:#F8F1EC; --t-warm3:#F5F0EA; --t-grid:#EFE7E1;
+    --t-rose2:#F3E9EC; --t-rose3:#FBEEF2; --t-rose4:#FFF6F9; --t-rose-g2:#EFD3DB;
+    --t-field:#FFFDFE; --t-apx:#FBF6F2; --t-eg:#FBF6F1;
+    --t-blue:#ECF2F7; --t-blue2:#E7EEF7; --t-purple:#EFE7F3; --t-purple2:#E1D1EB;
+    --line-soft:#E6D8DD; --line-strong:#D8C6BB; --gold-line:#E9D79A;
+    --dash-line:#DAC9BB; --rose-line:#E2C9D1; --rose-line2:#E2B8C4; --rose-dash:#D8A9BC;
+    --purple-line:#D2BEE0; --dot-off:#E3D8CF; --dot-on:#D9C58A;
+    --gold-ink:#8A6800; --gold-ink-s:#7A5A00; --gold-ink-m:#9A6B00; --gold-ink-soft:#5B4A1F;
+    --mint-ink:#2F6B58; --mint-line:#3C8C76;
+    --eg-ink:#5A4A39; --apx-ink:#7A5A48; --gl-ink:#A6794A;
+    --muted:#B6A9AF; --muted-arrow:#C9BBB2; --del-ink:#D6C6CC;
+    --rose-ink:#9C2F52; --rose-ink2:#7A3B4E; --rose-ink3:#6E2440;
+    --blue-ink:#33506E; --purple-ink:#54396B;
+    color-scheme:light;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
@@ -102,7 +119,7 @@
   .tcard .meta .ttl{font-size:20px;font-weight:800;color:var(--ink);line-height:1.35;margin:1px 0 2px;}
   .tcard .meta .sub{font-size:15px;color:var(--ink-soft);line-height:1.55;
     overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-  .tcard .arrow{flex:0 0 auto;color:#C9BBB2;font-size:24px;font-weight:700;}
+  .tcard .arrow{flex:0 0 auto;color:var(--muted-arrow);font-size:24px;font-weight:700;}
   .tcard.capstone{background:linear-gradient(135deg,#23406F,#16294B);border-color:#16294B;}
   .tcard.capstone .meta .ttl,.tcard.capstone .meta .sub{color:#fff;}
   .tcard.capstone .meta .label{color:#E7C66B;}
@@ -135,7 +152,7 @@
   .note-sheet.open{display:block;}
   .nmask{position:absolute;inset:0;background:rgba(40,20,30,.45);}
   .note-panel{position:absolute;left:0;right:0;bottom:0;max-height:88vh;
-    background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);
+    background:var(--card);border-radius:22px 22px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.25);
     display:flex;flex-direction:column;animation:slideup .28s ease;}
   @keyframes slideup{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .note-phead{display:flex;align-items:center;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--line);}
@@ -143,26 +160,26 @@
   .note-phead .nl{font-size:12px;font-weight:800;color:var(--rose);letter-spacing:1px;}
   .note-phead .nt{font-size:18px;font-weight:800;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .note-close{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
-    background:#F3E9EC;color:#9C2F52;font-size:22px;font-weight:800;line-height:1;}
+    background:var(--t-rose2);color:var(--rose-ink);font-size:22px;font-weight:800;line-height:1;}
   .note-cbody{padding:14px 18px calc(env(safe-area-inset-bottom) + 18px);overflow-y:auto;}
-  .note-tip{font-size:13px;color:#9A8175;margin:0 0 10px;line-height:1.6;}
-  .note-area{width:100%;box-sizing:border-box;min-height:44vh;border:1.5px solid #E6D8DD;border-radius:14px;
-    padding:14px;font-family:inherit;font-size:16px;line-height:1.85;color:#3A2A30;resize:vertical;background:#FFFDFE;}
+  .note-tip{font-size:13px;color:var(--ink-soft);margin:0 0 10px;line-height:1.6;}
+  .note-area{width:100%;box-sizing:border-box;min-height:44vh;border:1.5px solid var(--line-soft);border-radius:14px;
+    padding:14px;font-family:inherit;font-size:16px;line-height:1.85;color:var(--ink);resize:vertical;background:var(--t-field);}
   .note-area:focus{outline:none;border-color:var(--rose);}
-  .note-saved{font-size:13px;color:#3C8C76;font-weight:700;margin-top:8px;height:18px;}
+  .note-saved{font-size:13px;color:var(--mint-line);font-weight:700;margin-top:8px;height:18px;}
 
   /* living it out */
-  .apx{background:#FBF6F2;border-radius:12px;padding:10px 12px;margin:8px 0;border-left:3px solid var(--ac,var(--rose));}
-  .apx-s{font-weight:800;color:#7A5A48;font-size:14.5px;margin-bottom:3px;}
-  .apx-a{color:#4D4036;font-size:15px;line-height:1.72;}
+  .apx{background:var(--t-apx);border-radius:12px;padding:10px 12px;margin:8px 0;border-left:3px solid var(--ac,var(--rose));}
+  .apx-s{font-weight:800;color:var(--apx-ink);font-size:14.5px;margin-bottom:3px;}
+  .apx-a{color:var(--ink);font-size:15px;line-height:1.72;}
   .apdiv{margin:16px 0 9px;font-weight:800;color:var(--navy);font-size:15px;}
   .aprow{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
-  .apply-inp{flex:1;min-width:0;border:1.5px solid #E6D8DD;border-radius:10px;padding:10px 12px;
-    font-family:inherit;font-size:15px;color:#3A2A30;background:#fff;}
+  .apply-inp{flex:1;min-width:0;border:1.5px solid var(--line-soft);border-radius:10px;padding:10px 12px;
+    font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);}
   .apply-inp:focus{outline:none;border-color:var(--rose);}
-  .apply-del{flex:0 0 auto;width:38px;height:38px;border-radius:10px;border:1.5px solid #E2C9D1;
-    background:#FBEEF2;color:#9C2F52;font-size:20px;font-weight:800;cursor:pointer;line-height:1;}
-  .apply-add{margin-top:2px;width:100%;border:1.5px dashed #D8A9BC;background:#FFF6F9;color:#9C2F52;
+  .apply-del{flex:0 0 auto;width:38px;height:38px;border-radius:10px;border:1.5px solid var(--rose-line);
+    background:var(--t-rose3);color:var(--rose-ink);font-size:20px;font-weight:800;cursor:pointer;line-height:1;}
+  .apply-add{margin-top:2px;width:100%;border:1.5px dashed var(--rose-dash);background:var(--t-rose4);color:var(--rose-ink);
     border-radius:12px;padding:11px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;}
 
   .kcard{background:var(--card);border:1px solid var(--line);border-radius:16px;
@@ -184,28 +201,28 @@
     border-left:5px solid var(--ac,var(--rose));}
   .scripture .ref{font-size:14px;font-weight:800;color:var(--ac,var(--rose));
     letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-  .scripture .verse{font-size:18.5px;line-height:1.85;color:#4A3942;}
+  .scripture .verse{font-size:18.5px;line-height:1.85;color:var(--ink);}
 
   /* 321 card */
-  .pcard{background:linear-gradient(135deg,#FBF3DC,#F6E9C4);border:1px solid #E9D79A;
+  .pcard{background:linear-gradient(135deg,var(--t-gold),var(--t-gold2));border:1px solid var(--gold-line);
     border-radius:16px;padding:16px 18px;margin-bottom:14px;}
-  .pcard .ptag{font-size:13px;font-weight:800;color:#8A6800;letter-spacing:1.5px;
+  .pcard .ptag{font-size:13px;font-weight:800;color:var(--gold-ink);letter-spacing:1.5px;
     display:flex;align-items:center;gap:6px;margin-bottom:6px;}
-  .pcard p{margin:0;color:#5B4A1F;line-height:1.75;}
+  .pcard p{margin:0;color:var(--gold-ink-soft);line-height:1.75;}
 
   /* comparison table */
   .compare{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
-  .cmp-legend{font-size:13px;color:#9A8175;margin:8px 2px 0;line-height:1.6;}
-  .crow{display:flex;align-items:center;gap:6px;background:#F8F1EC;border-radius:11px;padding:6px 7px;}
+  .cmp-legend{font-size:13px;color:var(--ink-soft);margin:8px 2px 0;line-height:1.6;}
+  .crow{display:flex;align-items:center;gap:6px;background:var(--t-warm2);border-radius:11px;padding:6px 7px;}
   .cmid{flex:1;display:flex;align-items:center;min-width:0;}
-  .cmid .bad{flex:1;padding:3px 6px;color:#A98A7C;text-align:right;font-size:15px;}
-  .cmid .vs{flex:0 0 auto;padding:0 6px;color:#C9BBB2;font-size:12px;}
+  .cmid .bad{flex:1;padding:3px 6px;color:var(--ink-soft);text-align:right;font-size:15px;}
+  .cmid .vs{flex:0 0 auto;padding:0 6px;color:var(--muted-arrow);font-size:12px;}
   .cmid .good{flex:1;padding:3px 6px;color:var(--ac,var(--rose));font-weight:800;font-size:16px;}
-  .cmp-tog{flex:0 0 auto;border:1.5px solid #D8C6BB;background:#fff;border-radius:999px;
+  .cmp-tog{flex:0 0 auto;border:1.5px solid var(--line-strong);background:var(--card);border-radius:999px;
     font-size:12px;font-weight:700;padding:6px 8px;cursor:pointer;font-family:inherit;
-    color:#A98A7C;line-height:1.1;white-space:nowrap;}
-  .cmp-tog.grow.on{background:#FBF0D8;border-color:#E0A93C;color:#9A6B00;}
-  .cmp-tog.done.on{background:#E7F1ED;border-color:#3C8C76;color:#2F6B58;}
+    color:var(--ink-soft);line-height:1.1;white-space:nowrap;}
+  .cmp-tog.grow.on{background:var(--t-gold4);border-color:#E0A93C;color:var(--gold-ink-m);}
+  .cmp-tog.done.on{background:var(--t-mint);border-color:var(--mint-line);color:var(--mint-ink);}
 
   /* hand of communication */
   .handlist{counter-reset:hand;}
@@ -216,7 +233,7 @@
     left:4px;top:7px;opacity:1;}
   .handlist li b{color:var(--ac,var(--rose));}
 
-  .note{font-size:14.5px;color:var(--ink-soft);background:#F2EBE5;border-radius:12px;
+  .note{font-size:14.5px;color:var(--ink-soft);background:var(--t-warm);border-radius:12px;
     padding:11px 14px;margin-bottom:14px;line-height:1.65;}
 
   /* ===== placeholder page ===== */
@@ -239,14 +256,14 @@
   .greet p{margin:0;color:var(--ink-soft);font-size:16px;}
   .dashcard{background:var(--card);border:1px solid var(--line);border-radius:18px;
     padding:16px 17px;margin-bottom:14px;box-shadow:var(--shadow);}
-  .balcard{background:linear-gradient(135deg,#FBF3DC,#F4E2BE);border:1px solid #E9D79A;}
-  .balcard .blabel{font-size:15px;color:#8A6800;font-weight:700;}
+  .balcard{background:linear-gradient(135deg,var(--t-gold),var(--t-gold3));border:1px solid var(--gold-line);}
+  .balcard .blabel{font-size:15px;color:var(--gold-ink);font-weight:700;}
   .balrow{display:flex;align-items:flex-end;gap:18px;margin:8px 0 4px;}
-  .balrow .big{font-size:46px;font-weight:800;color:#7A5A00;line-height:1;}
-  .balrow .bunit{font-size:16px;color:#8A6800;margin-bottom:6px;}
-  .balrow .bweek{margin-left:auto;text-align:right;color:#8A6800;font-size:15px;line-height:1.4;}
-  .balrow .bweek b{font-size:24px;color:#7A5A00;}
-  .balmsg{font-size:15px;color:#6B5418;line-height:1.6;margin-top:6px;}
+  .balrow .big{font-size:46px;font-weight:800;color:var(--gold-ink-s);line-height:1;}
+  .balrow .bunit{font-size:16px;color:var(--gold-ink);margin-bottom:6px;}
+  .balrow .bweek{margin-left:auto;text-align:right;color:var(--gold-ink);font-size:15px;line-height:1.4;}
+  .balrow .bweek b{font-size:24px;color:var(--gold-ink-s);}
+  .balmsg{font-size:15px;color:var(--gold-ink-soft);line-height:1.6;margin-top:6px;}
   .bigbtn{display:block;width:100%;border:none;border-radius:14px;cursor:pointer;
     background:var(--rose);color:#fff;font-size:19px;font-weight:800;padding:15px;
     box-shadow:0 5px 14px rgba(176,52,90,.28);font-family:inherit;}
@@ -255,7 +272,7 @@
   .minicard .mi{font-size:26px;}
   .minicard .mt{font-weight:800;color:var(--ink);font-size:17px;}
   .minicard .md{color:var(--ink-soft);font-size:14.5px;}
-  .softtag{font-size:12px;font-weight:800;color:#A89AA0;background:#F2EBE5;
+  .softtag{font-size:12px;font-weight:800;color:var(--ink-soft);background:var(--t-warm);
     border-radius:999px;padding:3px 10px;margin-left:auto;flex:0 0 auto;}
 
   /* ===== love deposits ===== */
@@ -263,13 +280,13 @@
   .bankview.active{display:block;}
   .form-lbl{font-size:15px;font-weight:800;color:var(--navy);margin:2px 0 8px;}
   .seg{display:flex;gap:8px;margin-bottom:14px;}
-  .seg button{flex:1;border:2px solid var(--line);background:#fff;border-radius:12px;
+  .seg button{flex:1;border:2px solid var(--line);background:var(--card);border-radius:12px;
     padding:11px 6px;font-size:17px;font-weight:700;color:var(--ink-soft);cursor:pointer;
     font-family:inherit;transition:.12s;}
   .seg button.on{border-color:var(--rose);background:var(--rose-tint);color:var(--rose);}
-  .seg.types button.on{border-color:var(--gold);background:#FBF3DC;color:#8A6800;}
+  .seg.types button.on{border-color:var(--gold);background:var(--t-gold);color:var(--gold-ink);}
   textarea.depo{width:100%;border:2px solid var(--line);border-radius:12px;padding:12px 13px;
-    font-size:18px;font-family:inherit;line-height:1.6;resize:vertical;min-height:84px;color:var(--ink);}
+    font-size:18px;font-family:inherit;line-height:1.6;resize:vertical;min-height:84px;color:var(--ink);background:var(--card);}
   textarea.depo:focus{outline:none;border-color:var(--rose);}
   .hint{font-size:14px;color:var(--ink-soft);margin:-6px 0 12px;line-height:1.55;}
   .deposit{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -277,13 +294,13 @@
   .deposit .dtop{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap;}
   .chip{font-size:13px;font-weight:800;border-radius:999px;padding:2px 10px;}
   .chip.to{background:var(--rose-tint);color:var(--rose);}
-  .chip.gan{background:#E5F0E8;color:var(--green);}
-  .chip.zan{background:#FBF3DC;color:#8A6800;}
-  .chip.zhu{background:#E7EEF7;color:var(--blue);}
-  .deposit .dtime{font-size:13px;color:#B6A9AF;margin-left:auto;}
+  .chip.gan{background:var(--t-green);color:var(--green);}
+  .chip.zan{background:var(--t-gold);color:var(--gold-ink);}
+  .chip.zhu{background:var(--t-blue2);color:var(--blue);}
+  .deposit .dtime{font-size:13px;color:var(--muted);margin-left:auto;}
   .deposit .dtext{font-size:17px;color:var(--ink);line-height:1.65;}
   .deposit .del{position:absolute;top:8px;right:10px;border:none;background:none;
-    color:#D6C6CC;font-size:18px;cursor:pointer;padding:4px;line-height:1;}
+    color:var(--del-ink);font-size:18px;cursor:pointer;padding:4px;line-height:1;}
   .empty{text-align:center;color:var(--ink-soft);padding:26px 16px;font-size:16px;line-height:1.7;}
   .empty .eic{font-size:40px;display:block;margin-bottom:8px;}
 
@@ -291,7 +308,7 @@
   .field{margin-bottom:14px;}
   .field label{display:block;font-size:15px;font-weight:800;color:var(--navy);margin-bottom:6px;}
   .field input,.field select{width:100%;border:2px solid var(--line);border-radius:12px;
-    padding:12px 13px;font-size:18px;font-family:inherit;color:var(--ink);background:#fff;}
+    padding:12px 13px;font-size:18px;font-family:inherit;color:var(--ink);background:var(--card);}
   .field input:focus,.field select:focus{outline:none;border-color:var(--rose);}
   .saved{font-size:15px;color:var(--green);font-weight:700;text-align:center;
     min-height:22px;margin-top:6px;}
@@ -307,12 +324,12 @@
   .rate-q{font-size:16.5px;color:var(--ink);line-height:1.6;margin-bottom:9px;}
   .rate-q .qn{color:var(--green);font-weight:800;margin-right:5px;}
   .rate-btns{display:flex;gap:7px;}
-  .rate-btns button{flex:1;border:2px solid var(--line);background:#fff;border-radius:10px;
+  .rate-btns button{flex:1;border:2px solid var(--line);background:var(--card);border-radius:10px;
     padding:11px 0;font-size:18px;font-weight:800;color:var(--ink-soft);cursor:pointer;font-family:inherit;transition:.1s;}
-  .rate-btns button.on{border-color:var(--green);background:#E5F0E8;color:var(--green);}
-  .rate-ends{display:flex;justify-content:space-between;font-size:13px;color:#B6A9AF;margin-top:5px;}
+  .rate-btns button.on{border-color:var(--green);background:var(--t-green);color:var(--green);}
+  .rate-ends{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:5px;}
   .rate-row.warn .rate-btns button.on{border-color:var(--rose);background:var(--rose-tint);color:var(--rose);}
-  .seg.who button.on{border-color:var(--green);background:#E5F0E8;color:var(--green);}
+  .seg.who button.on{border-color:var(--green);background:var(--t-green);color:var(--green);}
 
   .light-badge{display:flex;align-items:center;gap:14px;border-radius:16px;padding:16px 18px;margin-bottom:14px;color:#fff;}
   .light-badge .lemoji{font-size:40px;}
@@ -323,8 +340,8 @@
     padding:14px;text-align:center;box-shadow:var(--shadow);}
   .result-box .rbnum{font-size:30px;font-weight:800;color:var(--navy);line-height:1.1;}
   .result-box .rblbl{font-size:14px;color:var(--ink-soft);margin-top:3px;}
-  .interp{background:#FBF3DC;border:1px solid #E9D79A;border-radius:14px;padding:14px 16px;margin-bottom:16px;
-    font-size:16px;line-height:1.7;color:#5B4A1F;}
+  .interp{background:var(--t-gold);border:1px solid var(--gold-line);border-radius:14px;padding:14px 16px;margin-bottom:16px;
+    font-size:16px;line-height:1.7;color:var(--gold-ink-soft);}
 
   .chart-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 12px 8px;
     margin-bottom:14px;box-shadow:var(--shadow);}
@@ -337,27 +354,27 @@
   .hist-item .hl{width:14px;height:14px;border-radius:50%;flex:0 0 auto;}
   .hist-item .hwho{font-weight:800;color:var(--ink);}
   .hist-item .hsat{margin-left:auto;font-weight:800;color:var(--green);font-size:18px;}
-  .hist-item .hdate{font-size:13px;color:#B6A9AF;}
+  .hist-item .hdate{font-size:13px;color:var(--muted);}
 
   /* ===== habits of happiness ===== */
   .hpills{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-  .hpill{display:flex;align-items:center;gap:7px;border:2px solid var(--line);background:#fff;
+  .hpill{display:flex;align-items:center;gap:7px;border:2px solid var(--line);background:var(--card);
     border-radius:12px;padding:12px 10px;font-size:16px;font-weight:700;color:var(--ink-soft);
     cursor:pointer;font-family:inherit;transition:.12s;}
   .hpill .he{font-size:20px;}
-  .hpill.on{border-color:var(--green);background:#E5F0E8;color:var(--green);}
+  .hpill.on{border-color:var(--green);background:var(--t-green);color:var(--green);}
   .hgrid .grow{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
   .hgrid .glabel{width:26px;font-size:18px;text-align:center;flex:0 0 auto;}
   .hgrid .gcells{display:flex;gap:3px;flex:1;}
-  .gcell{flex:1;height:20px;border-radius:4px;background:#EFE7E1;min-width:0;}
-  .gcell.ghd{background:none;font-size:11px;color:#B6A9AF;display:flex;align-items:flex-end;
+  .gcell{flex:1;height:20px;border-radius:4px;background:var(--t-grid);min-width:0;}
+  .gcell.ghd{background:none;font-size:11px;color:var(--muted);display:flex;align-items:flex-end;
     justify-content:center;aspect-ratio:auto;height:16px;}
   .gcell.today{outline:2px solid var(--ink-soft);outline-offset:-1px;}
 
   /* ===== reconciliation tool · hand of communication ===== */
-  .gm-row{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:#fff;}
+  .gm-row{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--card);}
   .gm-del{background:none;border:none;color:var(--rose);font-size:14.5px;font-weight:700;cursor:pointer;font-family:inherit;padding:2px 0;}
-  .gm-add{background:#fff;color:var(--rose);border:2px dashed var(--rose);border-radius:12px;padding:12px;width:100%;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;}
+  .gm-add{background:var(--card);color:var(--rose);border:2px dashed var(--rose);border-radius:12px;padding:12px;width:100%;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;}
   .gm-add:active{transform:scale(.99);}
   .role-item{font-size:15.5px;line-height:1.75;color:var(--ink);margin-bottom:10px;}
   .role-item b{display:block;color:var(--rose);font-size:15px;margin-bottom:1px;}
@@ -365,8 +382,8 @@
   .role-ul li{font-size:15px;line-height:1.9;color:var(--ink);}
   .role-ul li b{color:var(--navy);}
   .role-sub{font-size:14px;font-weight:800;color:var(--rose);margin:12px 0 2px;letter-spacing:.5px;}
-  .hand-reminder{background:linear-gradient(135deg,#FBF3DC,#F6E9C4);border:1px solid #E9D79A;
-    border-radius:16px;padding:16px 18px;margin-bottom:16px;font-size:16px;line-height:1.78;color:#5B4A1F;}
+  .hand-reminder{background:linear-gradient(135deg,var(--t-gold),var(--t-gold2));border:1px solid var(--gold-line);
+    border-radius:16px;padding:16px 18px;margin-bottom:16px;font-size:16px;line-height:1.78;color:var(--gold-ink-soft);}
   .hand-parts{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 2px;}
   .hand-parts span{font-size:14px;background:var(--rose-tint);color:var(--rose);
     border-radius:999px;padding:4px 11px;font-weight:700;}
@@ -377,11 +394,11 @@
   .hs-title{font-size:19px;font-weight:800;color:var(--navy);}
   .hs-prompt{font-size:15.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:10px;}
   .feel-bar{display:flex;gap:8px;margin-bottom:10px;}
-  .feel-bar button{flex:1;border:2px solid var(--line);background:#fff;border-radius:10px;padding:8px;
+  .feel-bar button{flex:1;border:2px solid var(--line);background:var(--card);border-radius:10px;padding:8px;
     font-weight:700;font-family:inherit;font-size:15px;color:var(--ink-soft);cursor:pointer;}
   .feel-bar button.on{border-color:var(--rose);background:var(--rose-tint);color:var(--rose);}
   .feel-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-  .fchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;
+  .fchip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;
     font-size:15.5px;color:var(--ink);cursor:pointer;font-family:inherit;transition:.1s;}
   .fchip:active{background:var(--rose-tint);border-color:var(--rose);}
   .hand-summary{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 19px;
@@ -397,36 +414,36 @@
   /* ===== guided sharing ===== */
   .gprog{text-align:center;font-size:15px;color:var(--ink-soft);font-weight:700;margin:2px 0 8px;}
   .gdots{display:flex;justify-content:center;gap:7px;margin-bottom:16px;}
-  .gdot{width:9px;height:9px;border-radius:50%;background:#E3D8CF;transition:.15s;}
+  .gdot{width:9px;height:9px;border-radius:50%;background:var(--dot-off);transition:.15s;}
   .gdot.on{background:var(--gold);transform:scale(1.3);}
-  .gdot.done{background:#D9C58A;}
+  .gdot.done{background:var(--dot-on);}
   .gstep{border-left:5px solid var(--gold);}
-  .gs-label{display:inline-block;font-size:14.5px;font-weight:800;color:#8A6800;
-    background:#FBF3DC;border-radius:999px;padding:3px 13px;margin-bottom:11px;}
+  .gs-label{display:inline-block;font-size:14.5px;font-weight:800;color:var(--gold-ink);
+    background:var(--t-gold);border-radius:999px;padding:3px 13px;margin-bottom:11px;}
   .gs-body{font-size:18.5px;line-height:1.95;color:var(--ink);}
-  .gs-hint{font-size:15.5px;color:var(--ink-soft);background:#F5F0EA;border-radius:12px;
+  .gs-hint{font-size:15.5px;color:var(--ink-soft);background:var(--t-warm3);border-radius:12px;
     padding:11px 14px;margin-top:12px;line-height:1.7;}
-  .gs-eg{background:#FBF6F1;border:1px dashed #DAC9BB;border-radius:12px;padding:11px 14px;
-    margin-top:12px;font-size:16.5px;line-height:1.78;color:#5A4A39;}
-  .gs-eg .gl{font-size:13px;font-weight:800;color:#A6794A;letter-spacing:1px;margin-bottom:5px;}
-  .gs-pray{background:#ECF2F7;border-radius:12px;padding:11px 14px;margin-top:12px;
-    font-size:16.5px;line-height:1.85;color:#33506E;}
-  .gs-pray .gl{font-size:13px;font-weight:800;color:#5B7BA8;letter-spacing:1px;margin-bottom:5px;}
-  .gchips-title{font-size:13.5px;font-weight:800;color:#A6794A;letter-spacing:.5px;margin:16px 2px 8px;}
+  .gs-eg{background:var(--t-eg);border:1px dashed var(--dash-line);border-radius:12px;padding:11px 14px;
+    margin-top:12px;font-size:16.5px;line-height:1.78;color:var(--eg-ink);}
+  .gs-eg .gl{font-size:13px;font-weight:800;color:var(--gl-ink);letter-spacing:1px;margin-bottom:5px;}
+  .gs-pray{background:var(--t-blue);border-radius:12px;padding:11px 14px;margin-top:12px;
+    font-size:16.5px;line-height:1.85;color:var(--blue-ink);}
+  .gs-pray .gl{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:1px;margin-bottom:5px;}
+  .gchips-title{font-size:13.5px;font-weight:800;color:var(--gl-ink);letter-spacing:.5px;margin:16px 2px 8px;}
   .gchips{display:flex;flex-wrap:wrap;gap:8px;}
-  .gchip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;
+  .gchip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;
     font-size:16px;color:var(--ink);cursor:pointer;font-family:inherit;transition:.1s;}
-  .gchip.on{border-color:var(--gold);background:#FBF3DC;color:#8A6800;font-weight:700;}
-  .gs-echo{background:#E7F1ED;border-radius:12px;padding:11px 14px;margin-top:12px;
-    font-size:16.5px;line-height:1.8;color:#2F5D52;}
-  .gs-echo .gl{font-size:13px;font-weight:800;color:#3C8C76;letter-spacing:1px;margin-bottom:5px;}
-  .gs-resp{background:#FBEEF1;border-radius:12px;padding:11px 14px;margin-top:12px;
-    font-size:16.5px;line-height:1.8;color:#7A3B4E;}
-  .gs-resp .gl{font-size:13px;font-weight:800;color:#B0345A;letter-spacing:1px;margin-bottom:5px;}
+  .gchip.on{border-color:var(--gold);background:var(--t-gold);color:var(--gold-ink);font-weight:700;}
+  .gs-echo{background:var(--t-mint);border-radius:12px;padding:11px 14px;margin-top:12px;
+    font-size:16.5px;line-height:1.8;color:var(--mint-ink);}
+  .gs-echo .gl{font-size:13px;font-weight:800;color:var(--mint-line);letter-spacing:1px;margin-bottom:5px;}
+  .gs-resp{background:var(--t-rose3);border-radius:12px;padding:11px 14px;margin-top:12px;
+    font-size:16.5px;line-height:1.8;color:var(--rose-ink2);}
+  .gs-resp .gl{font-size:13px;font-weight:800;color:var(--rose);letter-spacing:1px;margin-bottom:5px;}
   .gnav{display:flex;gap:12px;margin-top:6px;}
   .gbtn{flex:1;border:none;border-radius:14px;padding:15px 8px;font-size:18px;font-weight:800;
     font-family:inherit;cursor:pointer;}
-  .gbtn.gprev{background:#fff;color:#8A6800;border:2px solid var(--gold);}
+  .gbtn.gprev{background:var(--card);color:var(--gold-ink);border:2px solid var(--gold);}
   .gbtn.gnext{background:var(--gold);color:#fff;box-shadow:0 5px 14px rgba(191,143,0,.28);}
 
   /* ===== camp three-stage nav ===== */
@@ -444,17 +461,17 @@
   .phasecard .pstage{font-size:13px;font-weight:800;letter-spacing:1px;color:var(--ac,var(--rose));}
   .phasecard .pttl{font-size:19px;font-weight:800;color:var(--ink);line-height:1.3;margin:1px 0 2px;}
   .phasecard .psub{font-size:14.5px;color:var(--ink-soft);line-height:1.5;}
-  .phasecard .parrow{flex:0 0 auto;color:#C9BBB2;font-size:24px;font-weight:700;}
+  .phasecard .parrow{flex:0 0 auto;color:var(--muted-arrow);font-size:24px;font-weight:700;}
 
   /* ===== checklist (prep / sacred acts) ===== */
   .checklist{display:flex;flex-direction:column;gap:9px;}
   .checkrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font-family:inherit;
-    border:2px solid var(--line);background:#fff;border-radius:13px;padding:12px 13px;cursor:pointer;
+    border:2px solid var(--line);background:var(--card);border-radius:13px;padding:12px 13px;cursor:pointer;
     color:var(--ink);transition:.12s;}
   .checkrow .ce{font-size:22px;flex:0 0 auto;}
   .checkrow .ct{flex:1;font-size:16px;font-weight:600;line-height:1.5;}
   .checkrow .ctsub{display:block;font-size:13px;color:var(--ink-soft);font-weight:500;margin-top:2px;}
-  .checkrow .cbox{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #D8C6BB;
+  .checkrow .cbox{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid var(--line-strong);
     display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;}
   .checkrow.on{border-color:var(--ac,var(--green));background:var(--tint,#E5F0E8);}
   .checkrow.on .cbox{background:var(--ac,var(--green));border-color:var(--ac,var(--green));}
@@ -462,18 +479,18 @@
   /* ===== seven-day prayer chain ===== */
   .pray7{display:flex;flex-direction:column;gap:8px;}
   .prayday{display:flex;align-items:center;gap:11px;width:100%;text-align:left;font-family:inherit;
-    border:2px solid var(--line);background:#fff;border-radius:13px;padding:11px 13px;cursor:pointer;
+    border:2px solid var(--line);background:var(--card);border-radius:13px;padding:11px 13px;cursor:pointer;
     color:var(--ink);transition:.12s;}
-  .prayday .pd{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:#F2EBE5;color:#8A6800;
+  .prayday .pd{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--t-warm);color:var(--gold-ink);
     display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
   .prayday .pp{flex:1;font-size:15.5px;line-height:1.5;}
-  .prayday .pc{flex:0 0 auto;font-size:20px;color:#D8C6BB;}
-  .prayday.on{border-color:var(--gold);background:#FBF3DC;}
+  .prayday .pc{flex:0 0 auto;font-size:20px;color:var(--line-strong);}
+  .prayday.on{border-color:var(--gold);background:var(--t-gold);}
   .prayday.on .pd{background:var(--gold);color:#fff;}
   .prayday.on .pc{color:var(--gold);}
 
   /* ===== camp progress rows (topics / acts) ===== */
-  .cprow{display:flex;align-items:center;gap:11px;border:1px solid var(--line);background:#fff;
+  .cprow{display:flex;align-items:center;gap:11px;border:1px solid var(--line);background:var(--card);
     border-radius:14px;padding:12px 13px;margin-bottom:10px;box-shadow:var(--shadow);}
   .cprow .cpi{font-size:24px;flex:0 0 auto;}
   .cprow .cpm{flex:1;min-width:0;display:flex;flex-direction:column;}
@@ -482,7 +499,7 @@
   .cprow .cps{font-size:13.5px;color:var(--ink-soft);line-height:1.45;margin-top:1px;}
   .cprow .cpgo{flex:0 0 auto;font-size:13px;font-weight:800;color:var(--rose);background:var(--rose-tint);
     border:none;border-radius:999px;padding:7px 11px;cursor:pointer;font-family:inherit;line-height:1.1;}
-  .cprow .cpcheck{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:2px solid #D8C6BB;background:#fff;
+  .cprow .cpcheck{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:2px solid var(--line-strong);background:var(--card);
     display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;cursor:pointer;line-height:1;}
   .cprow .cpcheck.on{background:var(--green);border-color:var(--green);}
 
@@ -494,13 +511,13 @@
     box-shadow:0 -4px 18px rgba(140,60,80,.07);}
   .tab{flex:1;background:none;border:none;cursor:pointer;
     display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 1px;
-    color:#A89AA0;font-size:11px;font-weight:700;transition:color .15s;}
+    color:var(--ink-soft);font-size:11px;font-weight:700;transition:color .15s;}
   .tab .ti{font-size:22px;line-height:1;filter:grayscale(.4) opacity(.7);transition:.15s;}
   .tab.active{color:var(--rose);}
   .tab.active .ti{filter:none;transform:translateY(-1px);}
 
   /* ===== group follow-up · gathering flow ===== */
-  .fstep{display:flex;gap:12px;border:1px solid var(--line);background:#fff;border-radius:14px;
+  .fstep{display:flex;gap:12px;border:1px solid var(--line);background:var(--card);border-radius:14px;
     padding:13px 14px;margin-bottom:10px;box-shadow:var(--shadow);}
   .fstep .ftime{flex:0 0 auto;width:50px;text-align:center;padding-top:2px;}
   .fstep .ftime .fm{font-size:21px;font-weight:800;color:var(--ac,var(--rose));line-height:1;}
@@ -511,7 +528,78 @@
   .fstep .fbody b{color:var(--ac,var(--rose));}
   .fstep.fcore{border:2px solid var(--ac,var(--rose));background:var(--rose-tint);}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+  /* ===== 備份與還原 / 儲存警告 ===== */
+  .warnbar{background:#8E1B33;color:#fff;font-size:15px;font-weight:700;line-height:1.55;
+    padding:12px 16px;text-align:center;}
+  .bk-stat{font-size:14px;color:var(--ink-soft);margin:0 0 12px;line-height:1.5;}
+  .bk-btn{display:block;width:100%;box-sizing:border-box;border:2px solid var(--line);background:var(--card);
+    color:var(--ink);border-radius:14px;padding:13px;font-size:16.5px;font-weight:800;
+    font-family:inherit;cursor:pointer;margin-top:10px;text-align:center;}
+  .bk-btn.warn{border-color:#D8A200;color:var(--gold-ink);background:var(--t-gold);}
+  .bk-paste{width:100%;box-sizing:border-box;min-height:78px;border:2px solid var(--line);
+    border-radius:12px;padding:10px 12px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card);
+    margin-top:12px;resize:vertical;}
+  #bk-file{display:none;}
+
+  /* ===== 深色模式 ===== */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+    --ink:#EDE6EA; --ink-soft:#B3A9B2; --cream:#16131A; --card:#221D28; --line:#3A3242;
+    --shadow:0 6px 22px rgba(0,0,0,.5);
+    --rose:#D2607F; --rose-soft:#DD7E97; --rose-tint:#3A2029;
+    --green:#5C9E74; --gold:#D9A521; --blue:#89A8D4; --purple:#B48FCB; --navy:#A8BEE2;
+    --t-gold:#3A2F14; --t-gold2:#463819; --t-gold3:#4E3E1C; --t-gold4:#43371A;
+    --t-green:#1F3327; --t-mint:#1E332D;
+    --t-warm:#2C2530; --t-warm2:#2E2733; --t-warm3:#2D2632; --t-grid:#332C38;
+    --t-rose2:#33242B; --t-rose3:#35252C; --t-rose4:#302128; --t-rose-g2:#462A34;
+    --t-field:#1D1923; --t-apx:#2B242F; --t-eg:#252029;
+    --t-blue:#1E2A3A; --t-blue2:#22304A; --t-purple:#2E2439; --t-purple2:#3A2E48;
+    --line-soft:#3D3444; --line-strong:#524757; --gold-line:#6B5620;
+    --dash-line:#4A4152; --rose-line:#4E3A44; --rose-line2:#5E3B48; --rose-dash:#6B4453;
+    --purple-line:#574468; --dot-off:#3E3646; --dot-on:#8A6F28;
+    --gold-ink:#E8C77A; --gold-ink-s:#F2D89B; --gold-ink-m:#E8B85A; --gold-ink-soft:#DCC78F;
+    --mint-ink:#7FD0B4; --mint-line:#5FB79C;
+    --eg-ink:#D9C9AE; --apx-ink:#D3AF98; --gl-ink:#D3A876;
+    --muted:#8A8091; --muted-arrow:#6D6275; --del-ink:#5B5163;
+    --rose-ink:#F08CAB; --rose-ink2:#EBA0B6; --rose-ink3:#F0A0B6;
+    --blue-ink:#9DBBDD; --purple-ink:#C9A9E0;
+    color-scheme:dark;
+    }
+    :root:not([data-theme="light"]) .brandbar{background:linear-gradient(135deg,#7E2340 0%,#571630 100%);
+      box-shadow:0 2px 12px rgba(0,0,0,.55);}
+    :root:not([data-theme="light"]) .warnbar{background:#B4243F;}
+  }
+  :root[data-theme="dark"]{
+    --ink:#EDE6EA; --ink-soft:#B3A9B2; --cream:#16131A; --card:#221D28; --line:#3A3242;
+    --shadow:0 6px 22px rgba(0,0,0,.5);
+    --rose:#D2607F; --rose-soft:#DD7E97; --rose-tint:#3A2029;
+    --green:#5C9E74; --gold:#D9A521; --blue:#89A8D4; --purple:#B48FCB; --navy:#A8BEE2;
+    --t-gold:#3A2F14; --t-gold2:#463819; --t-gold3:#4E3E1C; --t-gold4:#43371A;
+    --t-green:#1F3327; --t-mint:#1E332D;
+    --t-warm:#2C2530; --t-warm2:#2E2733; --t-warm3:#2D2632; --t-grid:#332C38;
+    --t-rose2:#33242B; --t-rose3:#35252C; --t-rose4:#302128; --t-rose-g2:#462A34;
+    --t-field:#1D1923; --t-apx:#2B242F; --t-eg:#252029;
+    --t-blue:#1E2A3A; --t-blue2:#22304A; --t-purple:#2E2439; --t-purple2:#3A2E48;
+    --line-soft:#3D3444; --line-strong:#524757; --gold-line:#6B5620;
+    --dash-line:#4A4152; --rose-line:#4E3A44; --rose-line2:#5E3B48; --rose-dash:#6B4453;
+    --purple-line:#574468; --dot-off:#3E3646; --dot-on:#8A6F28;
+    --gold-ink:#E8C77A; --gold-ink-s:#F2D89B; --gold-ink-m:#E8B85A; --gold-ink-soft:#DCC78F;
+    --mint-ink:#7FD0B4; --mint-line:#5FB79C;
+    --eg-ink:#D9C9AE; --apx-ink:#D3AF98; --gl-ink:#D3A876;
+    --muted:#8A8091; --muted-arrow:#6D6275; --del-ink:#5B5163;
+    --rose-ink:#F08CAB; --rose-ink2:#EBA0B6; --rose-ink3:#F0A0B6;
+    --blue-ink:#9DBBDD; --purple-ink:#C9A9E0;
+    color-scheme:dark;
+  }
+  :root[data-theme="dark"] .brandbar{background:linear-gradient(135deg,#7E2340 0%,#571630 100%);
+    box-shadow:0 2px 12px rgba(0,0,0,.55);}
+  :root[data-theme="dark"] .warnbar{background:#B4243F;}
 </style>
+<script>
+/* 主題：在繪製前先套用，避免閃白 */
+(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')
+document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 </head>
 <body>
 
@@ -617,7 +705,7 @@
     <div class="note-cbody">
       <p class="note-tip">📖 Write down your insights, what moved you, and what you want to practice. It saves automatically on this device.</p>
       <textarea class="note-area" id="note-area" placeholder="For example:&#10;· The line that touched me most today was…&#10;· The thing I see in myself is…&#10;· What I want to practice this week is…"></textarea>
-      <div class="note-saved" id="note-saved"></div>
+      <div class="note-saved" role="status" aria-live="polite" id="note-saved"></div>
     </div>
   </div>
 </div>
@@ -800,7 +888,7 @@
 
 <!-- Pearl Moments subview -->
 <section class="bankview" id="pearlsview">
-  <div class="dhead" style="background:linear-gradient(135deg,#7E5A98,#54396B);">
+  <div class="dhead" style="background:linear-gradient(135deg,var(--purple),#54396B);">
     <button class="back" id="pearls-back">‹ Back</button>
     <div class="dicon">🦪</div>
     <div class="dlabel">Growth</div>
@@ -904,11 +992,20 @@
       <select id="pf-wlove2"></select>
     </div>
     <button class="bigbtn" id="save-profile">Save profile</button>
-    <div class="saved" id="pf-saved"></div>
+    <div class="saved" role="status" aria-live="polite" id="pf-saved"></div>
   </div>
 
   <div class="dashcard" id="open-group" style="cursor:pointer;">
-    <div class="minicard"><div class="mi">🤝</div><div style="flex:1;"><div class="mt">Home of Love</div><div class="md">Mentors · host couple · members · follow-up</div></div><span style="color:var(--rose);font-size:24px;font-weight:700;line-height:1;">›</span></div>
+    <div class="minicard"><div class="mi" aria-hidden="true">🤝</div><div style="flex:1;"><div class="mt">Home of Love</div><div class="md">Mentors · host couple · members · follow-up</div></div><span style="color:var(--rose);font-size:24px;font-weight:700;line-height:1;">›</span></div>
+  </div>
+  <div class="dashcard">
+    <div class="form-lbl" style="font-size:18px;margin-bottom:6px;">🌗 Appearance</div>
+    <p class="a-intro" style="margin:0 0 12px;font-size:15px;">Dark mode is gentler on the eyes for night-time reading and prayer.</p>
+    <div class="seg" id="theme-seg" role="group" aria-label="Appearance theme">
+      <button data-t="auto" type="button">System</button>
+      <button data-t="light" type="button">Light</button>
+      <button data-t="dark" type="button">Dark</button>
+    </div>
   </div>
   <div class="dashcard">
     <div class="form-lbl" style="font-size:18px;margin-bottom:6px;">🔤 Text Size</div>
@@ -919,16 +1016,28 @@
       <button data-s="1.3">Extra Large</button>
     </div>
   </div>
+  <div class="dashcard">
+    <div class="form-lbl" style="font-size:18px;margin-bottom:6px;">💾 Backup &amp; Restore</div>
+    <p class="a-intro" style="margin:0 0 8px;font-size:15px;">Everything you have written — love deposits, your covenant, pearls, assessments, your Home of Love roster — <b>lives only on this phone</b>. Back it up regularly so nothing is lost when you change phones or clear your browser.</p>
+    <p class="bk-stat" id="bk-stat"></p>
+    <button class="bigbtn" id="bk-export" style="background:var(--green);">Export backup file</button>
+    <button class="bk-btn" id="bk-copy">Copy backup text</button>
+    <label class="bk-btn" for="bk-file">Choose a backup file to restore…</label>
+    <input type="file" id="bk-file" accept=".json,application/json">
+    <textarea class="bk-paste" id="bk-paste" placeholder="…or paste your backup text here"></textarea>
+    <button class="bk-btn warn" id="bk-restore">Restore from the text above (overwrites everything)</button>
+    <div class="saved" role="status" aria-live="polite" id="bk-saved"></div>
+  </div>
 </section>
 
-<nav class="tabbar" id="tabbar">
-  <button class="tab" data-target="page-home"><span class="ti">🏠</span>Today</button>
-  <button class="tab active" data-target="page-journey"><span class="ti">🧭</span>Journey</button>
-  <button class="tab" data-target="page-learn"><span class="ti">📖</span>Topics</button>
-  <button class="tab" data-target="page-practice"><span class="ti">❤️</span>Practice</button>
-  <button class="tab" data-target="page-grow"><span class="ti">🌱</span>Growth</button>
-  <button class="tab" data-target="page-followup"><span class="ti">🍵</span>Follow-up</button>
-  <button class="tab" data-target="page-us"><span class="ti">⚙️</span>Us</button>
+<nav class="tabbar" id="tabbar" role="tablist" aria-label="Main sections">
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-home"><span class="ti" aria-hidden="true">🏠</span>Today</button>
+  <button type="button" role="tab" aria-selected="true" class="tab active" data-target="page-journey"><span class="ti" aria-hidden="true">🧭</span>Journey</button>
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-learn"><span class="ti" aria-hidden="true">📖</span>Topics</button>
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-practice"><span class="ti" aria-hidden="true">❤️</span>Practice</button>
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-grow"><span class="ti" aria-hidden="true">🌱</span>Growth</button>
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-followup"><span class="ti" aria-hidden="true">🍵</span>Follow-up</button>
+  <button type="button" role="tab" aria-selected="false" class="tab" data-target="page-us"><span class="ti" aria-hidden="true">⚙️</span>Us</button>
 </nav>
 
 <script>
@@ -1137,6 +1246,7 @@ function applyHTML(tp){
 }
 
 function openTopic(i){
+  rememberScroll('Topic');
   const tp=TOPICS[i];
   const head=document.getElementById('dhead');
   head.style.background = tp.capstone
@@ -1193,7 +1303,7 @@ function closeTopic(){
   closeNote();
   document.getElementById('page-learn').classList.add('active');
   if(typeof setTabActive==='function') setTabActive('page-learn');
-  window.scrollTo(0,0);
+  restoreScroll('Topic');
 }
 
 /* ============ topic notebook ============ */
@@ -1263,12 +1373,28 @@ const store = (function(){
   let mem={}, ok=false;
   try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); ok=true; }catch(e){}
   return {
+    available: ok,
     get(k){ try{ return ok? localStorage.getItem(k) : (k in mem? mem[k]:null); }catch(e){ return (k in mem? mem[k]:null); } },
     set(k,v){ try{ ok? localStorage.setItem(k,v) : (mem[k]=v); }catch(e){ mem[k]=v; } }
   };
 })();
 function jget(k,d){ try{ const v=store.get(k); return v? JSON.parse(v):d; }catch(e){ return d; } }
 function jset(k,v){ store.set(k, JSON.stringify(v)); }
+
+/* ============ 捲動位置記憶（返回時回到原處） ============ */
+const scrollMem={};
+function rememberScroll(k){ scrollMem[k]=window.scrollY||window.pageYOffset||0; }
+function restoreScroll(k){
+  const y=scrollMem[k]||0;
+  window.scrollTo(0,y);
+  requestAnimationFrame(()=>window.scrollTo(0,y));
+}
+function keepScroll(fn){
+  const y=window.scrollY||window.pageYOffset||0;
+  fn();
+  window.scrollTo(0,y);
+  requestAnimationFrame(()=>window.scrollTo(0,y));
+}
 
 /* ============ couple profile ============ */
 const LOVE_LANGS=['Physical touch','Words of affirmation','Quality time','Receiving gifts','Acts of service'];
@@ -1347,7 +1473,7 @@ function renderDepoList(){
   const list=getDeposits().slice().sort((a,b)=>b.ts-a.ts);
   const wrap=document.getElementById('depo-list');
   if(!list.length){
-    wrap.innerHTML='<div class="empty"><span class="eic">💛</span>No deposit history yet.<br>Every word of thanks, praise, and blessing is saved here.</div>';
+    wrap.innerHTML='<div class="empty"><span class="eic" aria-hidden="true">💛</span>No deposit history yet.<br>Every word of thanks, praise, and blessing is saved here.</div>';
     return;
   }
   wrap.innerHTML=list.map(d=>{
@@ -1365,6 +1491,7 @@ function renderDepoList(){
   wrap.querySelectorAll('.deposit').forEach((node,i)=>{ node.querySelector('.dtext').textContent=list[i].text; });
 }
 function openBank(){
+  rememberScroll('Bank');
   bankReturn=(document.querySelector('.page.active')||{id:'page-home'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('detail').classList.remove('active');
@@ -1379,7 +1506,7 @@ function closeBank(){
   document.getElementById('bankview').classList.remove('active');
   document.getElementById(bankReturn).classList.add('active');
   renderBalance(); updateGreeting();
-  window.scrollTo(0,0);
+  restoreScroll('Bank');
 }
 document.getElementById('open-bank').addEventListener('click',openBank);
 document.getElementById('home-deposit').addEventListener('click',openBank);
@@ -1445,6 +1572,7 @@ function shade(hex){
 let assessState=null, assessScreen='intro';
 
 function openAssess(){
+  rememberScroll('Assess');
   bankReturn=(document.querySelector('.page.active')||{id:'page-grow'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('detail').classList.remove('active');
@@ -1458,7 +1586,7 @@ function openAssess(){
 function closeAssess(){
   document.getElementById('assessview').classList.remove('active');
   document.getElementById(bankReturn||'page-grow').classList.add('active');
-  window.scrollTo(0,0);
+  restoreScroll('Assess');
 }
 document.getElementById('open-assess').addEventListener('click',openAssess);
 document.getElementById('assess-back').addEventListener('click',()=>{
@@ -1472,7 +1600,7 @@ function showAssessIntro(){
   if(hist.length){
     const last=hist[hist.length-1], lt=lightOf(last.p3total);
     histBlock=`<div class="dashcard">
-      <div class="minicard"><div class="mi">${lt.emoji}</div>
+      <div class="minicard"><div class="mi" aria-hidden="true">${lt.emoji}</div>
         <div><div class="mt">Most recent: ${who(last.who)} · ${last.sat} pts</div>
         <div class="md">${lt.label} · ${hist.length} assessment(s) completed</div></div></div>
       <button class="bigbtn" id="a-history" style="background:var(--green);margin-top:12px;">📈 View history & trends</button>
@@ -1532,7 +1660,7 @@ function showAssessForm(){
       <p class="a-intro" style="margin:0 0 4px;font-size:15px;">The more you agree, the higher the score. Please answer honestly.</p>
       <div>${p3rows}</div>
     </div>
-    <div class="saved" id="a-msg" style="color:var(--rose);min-height:0;margin:0 0 8px;"></div>
+    <div class="saved" role="status" aria-live="polite" id="a-msg" style="color:var(--rose);min-height:0;margin:0 0 8px;"></div>
     <button class="bigbtn" id="a-finish" style="background:var(--green);">See results</button>`;
   const r=body.querySelector('#sat-range'), n=body.querySelector('#sat-num');
   r.addEventListener('input',()=>{ assessState.sat=Number(r.value); n.textContent=r.value; });
@@ -1569,7 +1697,7 @@ function showAssessResult(){
     </div>
     <div class="interp">${lt.msg}</div>
     <button class="bigbtn" id="a-save" style="background:var(--green);">Save this assessment</button>
-    <div class="saved" id="a-saved2"></div>
+    <div class="saved" role="status" aria-live="polite" id="a-saved2"></div>
     <button class="bigbtn" id="a-redo" style="background:#fff;color:var(--green);border:2px solid var(--green);box-shadow:none;margin-top:6px;">Redo</button>`;
   body.querySelector('#a-save').addEventListener('click',()=>{
     const list=getAssessments();
@@ -1592,7 +1720,7 @@ function buildChart(hist){
   let grid='';
   [0,50,100].forEach(v=>{const y=yFor(v);
     grid+=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#EDE3DC" stroke-width="1"/>`;
-    grid+=`<text x="${x0-5}" y="${y+4}" text-anchor="end" font-size="11" fill="#B6A9AF">${v}</text>`;
+    grid+=`<text x="${x0-5}" y="${y+4}" text-anchor="end" font-size="11" style="fill:var(--muted)">${v}</text>`;
   });
   function series(w,color){
     const pts=hist.map((e,i)=>({i,e})).filter(o=>o.e.who===w);
@@ -1608,7 +1736,7 @@ function showAssessHistory(){
   assessScreen='history';
   const hist=getAssessments().slice().sort((a,b)=>a.ts-b.ts), body=document.getElementById('assess-body');
   if(!hist.length){
-    body.innerHTML='<div class="empty"><span class="eic">📊</span>No assessment history yet.<br>After your first assessment, a trend chart will appear here.</div>'+
+    body.innerHTML='<div class="empty"><span class="eic" aria-hidden="true">📊</span>No assessment history yet.<br>After your first assessment, a trend chart will appear here.</div>'+
       '<button class="bigbtn" id="a-new" style="background:var(--green);">Start assessment</button>';
     body.querySelector('#a-new').addEventListener('click',showAssessIntro); return;
   }
@@ -1617,7 +1745,7 @@ function showAssessHistory(){
     return `<div class="hist-item">
       <span class="hl" style="background:${lt.color}"></span>
       <div><div class="hwho">${who(e.who)}</div><div class="hdate">${dt.getFullYear()}/${dt.getMonth()+1}/${dt.getDate()} · ${lt.label}</div></div>
-      <span class="hsat">${e.sat}<span style="font-size:13px;color:#B6A9AF;font-weight:500;"> pts</span></span>
+      <span class="hsat">${e.sat}<span style="font-size:13px;color:var(--muted);font-weight:500;"> pts</span></span>
     </div>`;
   }).join('');
   body.innerHTML=`
@@ -1659,6 +1787,7 @@ document.getElementById('hb-pills').addEventListener('click',e=>{
   toggleHabitToday(Number(b.dataset.i));
 });
 function openHabits(){
+  rememberScroll('Habits');
   bankReturn=(document.querySelector('.page.active')||{id:'page-home'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','handview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -1670,7 +1799,7 @@ function closeHabits(){
   document.getElementById('habitview').classList.remove('active');
   document.getElementById(bankReturn||'page-home').classList.add('active');
   renderHabitToday();
-  window.scrollTo(0,0);
+  restoreScroll('Habits');
 }
 document.getElementById('open-habits').addEventListener('click',openHabits);
 document.getElementById('habit-back').addEventListener('click',closeHabits);
@@ -1699,7 +1828,7 @@ function renderHabitGrid(){
         ${HABITS.map((h,i)=>`<span><i style="background:${HABIT_COLORS[i]}"></i>${h.t}</span>`).join('')}
       </div>
     </div>
-    <div class="dashcard"><div class="minicard"><div class="mi">🌱</div><div><div class="mt">${totalDone} completions in the last 14 days</div><div class="md">Habits are an extension of love deposits—Jesus does the hard part, we do the simple part, and surely better and better.</div></div></div></div>`;
+    <div class="dashcard"><div class="minicard"><div class="mi" aria-hidden="true">🌱</div><div><div class="mt">${totalDone} completions in the last 14 days</div><div class="md">Habits are an extension of love deposits—Jesus does the hard part, we do the simple part, and surely better and better.</div></div></div></div>`;
 }
 renderHabitToday();
 
@@ -1716,9 +1845,10 @@ const HAND_STEPS=[
 const FEEL_NEG=['sad','wronged','disappointed','discouraged','heartbroken','like crying','alone','lonely','helpless','hurt','angry','furious','frustrated','irritable','misunderstood','ignored','rejected','blamed','disrespected','undervalued','anxious','tense','afraid','worried','uneasy','stressed','weary','drained'];
 const FEEL_POS=['happy','joyful','thankful','moved','content','at peace','reassured','relaxed','loved','respected','affirmed','accepted','understood','cared for','needed','comforted','warm','close','hopeful','secure','gratified','blessed'];
 let handFeelMode='neg', handScreen='intro', handVals=['','','','','','',''];
-function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 function openHand(){
+  rememberScroll('Hand');
   bankReturn=(document.querySelector('.page.active')||{id:'page-practice'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -1729,7 +1859,7 @@ function openHand(){
 function closeHand(){
   document.getElementById('handview').classList.remove('active');
   document.getElementById(bankReturn||'page-practice').classList.add('active');
-  window.scrollTo(0,0);
+  restoreScroll('Hand');
 }
 document.getElementById('open-hand').addEventListener('click',openHand);
 document.getElementById('hand-back').addEventListener('click',()=>{
@@ -1808,12 +1938,12 @@ function showHandSummary(){
   handScreen='summary';
   const text=compileHand(), body=document.getElementById('hand-body');
   body.innerHTML=`
-    <div class="hand-reminder" style="background:linear-gradient(135deg,#F6E4E9,#EFD3DB);border-color:#E2B8C4;color:#6E2440;">
+    <div class="hand-reminder" style="background:linear-gradient(135deg,var(--rose-tint),var(--t-rose-g2));border-color:var(--rose-line2);color:var(--rose-ink3);">
       Communicate <b>new self to new self</b>. Calm and at peace, use the words below to speak well to your spouse.
     </div>
     <div class="hand-summary">${text? esc(text) : '(You haven\'t written anything yet — go back and fill in the seven parts of the Hand of Communication.)'}</div>
     <button class="bigbtn" id="hand-copy">Copy this message</button>
-    <div class="saved" id="hand-copied"></div>
+    <div class="saved" role="status" aria-live="polite" id="hand-copied"></div>
     <button class="bigbtn" id="hand-edit" style="background:#fff;color:var(--rose);border:2px solid var(--rose);box-shadow:none;margin-top:6px;">Go back and edit</button>
     <button class="bigbtn" id="hand-finish" style="background:#fff;color:var(--ink-soft);border:2px solid var(--line);box-shadow:none;margin-top:6px;">Done — clear and start over</button>`;
   body.querySelector('#hand-copy').addEventListener('click',()=>{
@@ -1930,6 +2060,7 @@ const ACTION_GUIDES=[
 ];
 let actionScreen='list', curAction=0, guideStep=0;
 function openActions(){
+  rememberScroll('Actions');
   bankReturn=(document.querySelector('.page.active')||{id:'page-practice'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -1940,7 +2071,7 @@ function openActions(){
 function closeActions(){
   document.getElementById('actionsview').classList.remove('active');
   document.getElementById(bankReturn||'page-practice').classList.add('active');
-  window.scrollTo(0,0);
+  restoreScroll('Actions');
 }
 document.getElementById('open-actions').addEventListener('click',openActions);
 document.getElementById('actions-back').addEventListener('click',()=>{
@@ -2053,6 +2184,7 @@ function renderAnniv(){
   wrap.innerHTML=lines||'<div class="anniv-empty">No anniversaries set yet. Under "Growth → The Covenant," fill in your wedding and covenant dates, and a countdown will appear here.</div>';
 }
 function openCovenant(){
+  rememberScroll('Covenant');
   bankReturn=(document.querySelector('.page.active')||{id:'page-grow'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -2064,7 +2196,7 @@ function closeCovenant(){
   document.getElementById('covenantview').classList.remove('active');
   document.getElementById(bankReturn||'page-grow').classList.add('active');
   renderAnniv();
-  window.scrollTo(0,0);
+  restoreScroll('Covenant');
 }
 document.getElementById('anniv-card').addEventListener('click',openCovenant);
 document.getElementById('open-covenant').addEventListener('click',openCovenant);
@@ -2090,7 +2222,7 @@ function renderCovenant(){
       <div class="field" style="margin-bottom:0;"><label>Wife's vow (optional)</label><textarea class="depo" id="cov-wvow" placeholder="e.g., I will submit to, uphold, and help you, walking through life hand in hand…">${esc(c.wVow||'')}</textarea></div>
     </div>
     <button class="bigbtn" id="cov-save" style="background:var(--navy);">Save covenant</button>
-    <div class="saved" id="cov-saved"></div>`;
+    <div class="saved" role="status" aria-live="polite" id="cov-saved"></div>`;
   body.querySelector('#cov-template').addEventListener('click',()=>{
     const ta=body.querySelector('#cov-vow');
     if(ta.value.trim()){ try{ if(!confirm('Replace your current covenant text with the template?')) return; }catch(e){ return; } }
@@ -2120,6 +2252,7 @@ const ROLES_MEET=['🎵 Worship leading','📖 Sharing leading','🍵 Refreshmen
 function getGroup(){ return jget('group_info',{gname:'',companion:{name:'',contact:''},leader:{name:'',contact:''},members:[],meet:{freq:'',time:'',way:''}}); }
 function updateBrand(){ const el=document.getElementById('brand-sub'); if(el){ const g=getGroup(); el.textContent=(g.gname&&g.gname.trim())?g.gname.trim():'Home of Love'; } }
 function openGroup(){
+  rememberScroll('Group');
   bankReturn=(document.querySelector('.page.active')||{id:'page-us'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview','covenantview','pearlsview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -2135,7 +2268,7 @@ function openGroup(){
 function closeGroup(){
   document.getElementById('groupview').classList.remove('active');
   document.getElementById(bankReturn||'page-us').classList.add('active');
-  window.scrollTo(0,0);
+  restoreScroll('Group');
 }
 function readGroupInputs(){
   const body=document.getElementById('group-body'); if(!body||!groupDraft) return;
@@ -2210,9 +2343,9 @@ function renderGroup(){
       <div class="field" style="margin-bottom:0;"><label>How you meet</label><select id="g-way">${opt(MEET_WAY,g.meet.way)}</select></div>
     </div>
     <button class="bigbtn" id="g-save">Save group info</button>
-    <div class="saved" id="g-saved"></div>`;
-  body.querySelector('#gm-add').addEventListener('click',()=>{ readGroupInputs(); groupDraft.members.push({name:'',contact:'',roleDaily:'',roleMeet:''}); renderGroup(); });
-  body.querySelectorAll('.gm-del').forEach(b=>b.addEventListener('click',()=>{ readGroupInputs(); groupDraft.members.splice(Number(b.dataset.i),1); renderGroup(); }));
+    <div class="saved" role="status" aria-live="polite" id="g-saved"></div>`;
+  body.querySelector('#gm-add').addEventListener('click',()=>{ readGroupInputs(); groupDraft.members.push({name:'',contact:'',roleDaily:'',roleMeet:''}); keepScroll(renderGroup); });
+  body.querySelectorAll('.gm-del').forEach(b=>b.addEventListener('click',()=>{ readGroupInputs(); groupDraft.members.splice(Number(b.dataset.i),1); keepScroll(renderGroup); }));
   body.querySelector('#g-save').addEventListener('click',()=>{
     readGroupInputs(); jset('group_info',groupDraft); updateBrand();
     const s=body.querySelector('#g-saved'); s.textContent='Saved ✓'; setTimeout(()=>{s.textContent='';},2000);
@@ -2247,6 +2380,7 @@ function getPearls(){ return jget('pearls',[]); }
 function pearlEmoji(k){ const c=PEARL_CATS.find(x=>x.k===k); return c?c.e:'🦪'; }
 function fmtDate(s){ if(!s) return ''; const p=s.split('-'); return p.length===3?`${p[0]}/${Number(p[1])}/${Number(p[2])}`:s; }
 function openPearls(){
+  rememberScroll('Pearls');
   bankReturn=(document.querySelector('.page.active')||{id:'page-grow'}).id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview','covenantview'].forEach(id=>document.getElementById(id).classList.remove('active'));
@@ -2257,7 +2391,7 @@ function openPearls(){
 function closePearls(){
   document.getElementById('pearlsview').classList.remove('active');
   document.getElementById(bankReturn||'page-grow').classList.add('active');
-  window.scrollTo(0,0);
+  restoreScroll('Pearls');
 }
 document.getElementById('open-pearls').addEventListener('click',openPearls);
 document.getElementById('pearls-back').addEventListener('click',closePearls);
@@ -2265,10 +2399,10 @@ function renderPearlsBody(){
   pearlCat=PEARL_CATS[0].k;
   const body=document.getElementById('pearls-body');
   body.innerHTML=`
-    <div class="dashcard balcard" style="background:linear-gradient(135deg,#EFE7F3,#E1D1EB);border-color:#D2BEE0;">
-      <div class="blabel" style="color:#54396B;">🦪 Pearl Necklace</div>
-      <div class="balrow"><div class="big" id="pearl-count" style="color:#54396B;">0</div><div class="bunit" style="color:#54396B;">pearls</div></div>
-      <div class="balmsg" style="color:#54396B;">Your spouse's flaws are like a grain of sand—choose to wrap them in love, and a grain of sand becomes a pearl.</div>
+    <div class="dashcard balcard" style="background:linear-gradient(135deg,var(--t-purple),var(--t-purple2));border-color:var(--purple-line);">
+      <div class="blabel" style="color:var(--purple-ink);">🦪 Pearl Necklace</div>
+      <div class="balrow"><div class="big" id="pearl-count" style="color:var(--purple-ink);">0</div><div class="bunit" style="color:var(--purple-ink);">pearls</div></div>
+      <div class="balmsg" style="color:var(--purple-ink);">Your spouse's flaws are like a grain of sand—choose to wrap them in love, and a grain of sand becomes a pearl.</div>
     </div>
     <div class="dashcard">
       <div class="field"><label>Date</label><input type="date" id="pearl-date"></div>
@@ -2311,10 +2445,10 @@ function renderPearlList(){
   const list=getPearls().slice().sort((a,b)=> a.date<b.date?1 : a.date>b.date?-1 : b.id.localeCompare(a.id));
   document.getElementById('pearl-count').textContent=list.length;
   const wrap=document.getElementById('pearl-list');
-  if(!list.length){ wrap.innerHTML='<div class="empty"><span class="eic">🦪</span>No pearls yet.<br>String your beautiful times, events, keepsakes, and memories together, one by one.</div>'; return; }
+  if(!list.length){ wrap.innerHTML='<div class="empty"><span class="eic" aria-hidden="true">🦪</span>No pearls yet.<br>String your beautiful times, events, keepsakes, and memories together, one by one.</div>'; return; }
   wrap.innerHTML=list.map(p=>`<div class="deposit">
     <button class="del" data-id="${p.id}">✕</button>
-    <div class="dtop"><span class="chip" style="background:#EFE7F3;color:#54396B;">${pearlEmoji(p.cat)} ${p.cat}</span><span class="dtime">${fmtDate(p.date)}</span></div>
+    <div class="dtop"><span class="chip" style="background:var(--t-purple);color:var(--purple-ink);">${pearlEmoji(p.cat)} ${p.cat}</span><span class="dtime">${fmtDate(p.date)}</span></div>
     <div class="ptitle" style="font-weight:800;color:var(--ink);font-size:17.5px;margin:2px 0 3px;"></div>
     <div class="dtext"></div>
   </div>`).join('');
@@ -2362,6 +2496,7 @@ let prepTo='h', prepTimer=null;
 function getPrepCheck(){ return jget('prep_checklist',{}); }
 function getPrepPray(){ return jget('prep_prayer',{}); }
 function openPrep(){
+  rememberScroll('Prep');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview','covenantview','pearlsview','groupview','campview'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
   document.getElementById('prepview').classList.add('active');
@@ -2372,7 +2507,7 @@ function closePrep(){
   document.getElementById('prepview').classList.remove('active');
   document.getElementById('page-journey').classList.add('active');
   setTabActive('page-journey');
-  window.scrollTo(0,0);
+  restoreScroll('Prep');
 }
 document.getElementById('open-prep').addEventListener('click',openPrep);
 document.getElementById('prep-back').addEventListener('click',closePrep);
@@ -2380,11 +2515,11 @@ function renderPrep(){
   const chk=getPrepCheck(), pray=getPrepPray();
   const cdone=PREP_CHECK.filter((_,i)=>chk[i]).length;
   const pdone=PREP_PRAY.filter((_,i)=>pray[i]).length;
-  const checkRows=PREP_CHECK.map((c,i)=>`<button class="checkrow${chk[i]?' on':''}" data-i="${i}" style="--ac:var(--gold);--tint:#FBF3DC;">
-      <span class="ce">${c.e}</span>
+  const checkRows=PREP_CHECK.map((c,i)=>`<button type="button" role="checkbox" aria-checked="${chk[i]?'true':'false'}" class="checkrow${chk[i]?' on':''}" data-i="${i}" style="--ac:var(--gold);--tint:var(--t-gold);">
+      <span class="ce" aria-hidden="true">${c.e}</span>
       <span class="ct">${c.t}${c.s?`<span class="ctsub">${c.s}</span>`:''}</span>
       <span class="cbox">${chk[i]?'✓':''}</span></button>`).join('');
-  const prayRows=PREP_PRAY.map((p,i)=>`<button class="prayday${pray[i]?' on':''}" data-i="${i}">
+  const prayRows=PREP_PRAY.map((p,i)=>`<button type="button" role="checkbox" aria-checked="${pray[i]?'true':'false'}" class="prayday${pray[i]?' on':''}" data-i="${i}">
       <span class="pd">${pray[i]?'✓':(i+1)}</span><span class="pp">${p}</span><span class="pc">${pray[i]?'🙏':'○'}</span></button>`).join('');
   const body=document.getElementById('prep-body');
   body.innerHTML=`
@@ -2396,7 +2531,7 @@ function renderPrep(){
     <div class="dashcard">
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:10px;">
         <div class="form-lbl" style="font-size:18px;margin:0;">🧳 Getting-Ready Checklist</div>
-        <span style="margin-left:auto;color:#8A6800;font-weight:800;font-size:18px;">${cdone}/${PREP_CHECK.length}</span>
+        <span id="prep-check-count" style="margin-left:auto;color:var(--gold-ink);font-weight:800;font-size:18px;">${cdone}/${PREP_CHECK.length}</span>
       </div>
       <div class="checklist" id="prep-check">${checkRows}</div>
     </div>
@@ -2404,7 +2539,7 @@ function renderPrep(){
     <div class="dashcard">
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
         <div class="form-lbl" style="font-size:18px;margin:0;">🙏 Seven-Day Prayer Chain</div>
-        <span style="margin-left:auto;color:#8A6800;font-weight:800;font-size:18px;">${pdone}/7</span>
+        <span id="prep-pray-count" style="margin-left:auto;color:var(--gold-ink);font-weight:800;font-size:18px;">${pdone}/7</span>
       </div>
       <p class="a-intro" style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">In the week before camp, one prayer focus each day. Pray for yourself, your spouse, and this journey, and prepare to receive.</p>
       <div class="pray7" id="prep-pray">${prayRows}</div>
@@ -2419,31 +2554,41 @@ function renderPrep(){
       <div class="field"><input type="text" class="apply-inp" id="prep-g2" placeholder="e.g., Thank you for all you have given to this home over the years."></div>
       <div class="field" style="margin-bottom:12px;"><input type="text" class="apply-inp" id="prep-g3" placeholder="e.g., Thank you for so often bearing with my shortcomings."></div>
       <button class="bigbtn" id="prep-gsave" style="background:var(--gold);">Deposit into the bank account 💛</button>
-      <div class="saved" id="prep-gsaved"></div>
+      <div class="saved" role="status" aria-live="polite" id="prep-gsaved"></div>
     </div>
 
     <div class="dashcard">
       <div class="form-lbl" style="font-size:18px;margin-bottom:6px;">🪞 Honestly Facing My Self-Centeredness</div>
       <p class="a-intro" style="font-size:14px;color:var(--ink-soft);margin:0 0 10px;">Be still before God—how has the "old self, centered on self" within me hurt this relationship? Write it honestly, and bring it to camp to give to God. (Saved on this device only)</p>
       <textarea class="depo" id="prep-conf" placeholder="e.g., To win the argument and save face, I often chose pride and hurt their heart…">${esc(jget('prep_confession',''))}</textarea>
-      <div class="note-saved" id="prep-conf-saved"></div>
+      <div class="note-saved" role="status" aria-live="polite" id="prep-conf-saved"></div>
     </div>
 
     <div class="dashcard">
-      <div class="minicard"><div class="mi">📊</div><div style="flex:1;"><div class="mt">Pre-Camp Self-Assessment (baseline)</div><div class="md">Take the "Intimacy Assessment" for the first time to set a baseline. Retake it after camp, and you'll see how you've grown.</div></div></div>
+      <div class="minicard"><div class="mi" aria-hidden="true">📊</div><div style="flex:1;"><div class="mt">Pre-Camp Self-Assessment (baseline)</div><div class="md">Take the "Intimacy Assessment" for the first time to set a baseline. Retake it after camp, and you'll see how you've grown.</div></div></div>
       <button class="bigbtn" id="prep-assess" style="background:var(--green);margin-top:12px;">Start the pre-camp assessment</button>
     </div>
 
     <div class="hand-reminder" style="margin-top:2px;">
       Ready? Bring this soft, humble, "I'll change first" heart into camp. <b>Jesus does the hard part, we do the simple part; not better overnight, but surely better and better.</b>
     </div>`;
+  /* 局部更新：不重繪整頁，捲動位置與輸入內容都保留 */
   body.querySelector('#prep-check').addEventListener('click',e=>{
     const b=e.target.closest('.checkrow'); if(!b) return;
-    const i=Number(b.dataset.i), m=getPrepCheck(); m[i]=!m[i]; jset('prep_checklist',m); renderPrep();
+    const i=Number(b.dataset.i), m=getPrepCheck(); m[i]=!m[i]; jset('prep_checklist',m);
+    b.classList.toggle('on', !!m[i]); b.setAttribute('aria-checked', m[i]?'true':'false');
+    const box=b.querySelector('.cbox'); if(box) box.textContent = m[i] ? '\u2713' : '';
+    const cnt=body.querySelector('#prep-check-count');
+    if(cnt) cnt.textContent = PREP_CHECK.filter((_,k)=>m[k]).length + '/' + PREP_CHECK.length;
   });
   body.querySelector('#prep-pray').addEventListener('click',e=>{
     const b=e.target.closest('.prayday'); if(!b) return;
-    const i=Number(b.dataset.i), m=getPrepPray(); m[i]=!m[i]; jset('prep_prayer',m); renderPrep();
+    const i=Number(b.dataset.i), m=getPrepPray(); m[i]=!m[i]; jset('prep_prayer',m);
+    b.classList.toggle('on', !!m[i]); b.setAttribute('aria-checked', m[i]?'true':'false');
+    const pd=b.querySelector('.pd'); if(pd) pd.textContent = m[i] ? '\u2713' : String(i+1);
+    const pc=b.querySelector('.pc'); if(pc) pc.textContent = m[i] ? '\ud83d\ude4f' : '\u25cb';
+    const cnt=body.querySelector('#prep-pray-count');
+    if(cnt) cnt.textContent = PREP_PRAY.filter((_,k)=>m[k]).length + '/' + PREP_PRAY.length;
   });
   const toSeg=body.querySelector('#prep-to');
   const drawTo=()=>{ toSeg.innerHTML=`<button data-to="h"${prepTo==='h'?' class="on"':''}>To ${NAMES.h}</button><button data-to="w"${prepTo==='w'?' class="on"':''}>To ${NAMES.w}</button>`; };
@@ -2486,6 +2631,7 @@ let campTimer=null;
 function getCampProg(){ return jget('camp_progress',{}); }
 function getCampRites(){ return jget('camp_rites',{}); }
 function openCamp(){
+  rememberScroll('Camp');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview','covenantview','pearlsview','groupview','prepview'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
   document.getElementById('campview').classList.add('active');
@@ -2496,7 +2642,7 @@ function closeCamp(){
   document.getElementById('campview').classList.remove('active');
   document.getElementById('page-journey').classList.add('active');
   setTabActive('page-journey');
-  window.scrollTo(0,0);
+  restoreScroll('Camp');
 }
 document.getElementById('open-camp').addEventListener('click',openCamp);
 document.getElementById('camp-back').addEventListener('click',closeCamp);
@@ -2516,15 +2662,15 @@ function renderCamp(){
   const tdone=TOPICS.filter((_,i)=>prog[i]).length;
   const rdone=CAMP_RITES.filter((_,i)=>rites[i]).length;
   const topicRows=TOPICS.map((tp,i)=>`<div class="cprow">
-      <span class="cpi">${tp.icon}</span>
+      <span class="cpi" aria-hidden="true">${tp.icon}</span>
       <span class="cpm"><span class="cpl">Topic ${tp.n}${tp.capstone?' · Cornerstone':''}</span><span class="cpt">${tp.title}</span><span class="cps">${tp.sub}</span></span>
       <button class="cpgo" data-go="${i}">View</button>
-      <button class="cpcheck${prog[i]?' on':''}" data-tp="${i}">${prog[i]?'✓':''}</button>
+      <button type="button" role="checkbox" aria-checked="${prog[i]?'true':'false'}" class="cpcheck${prog[i]?' on':''}" data-tp="${i}">${prog[i]?'✓':''}</button>
     </div>`).join('');
   const riteRows=CAMP_RITES.map((r,i)=>`<div class="cprow">
-      <span class="cpi">${r.e}</span>
+      <span class="cpi" aria-hidden="true">${r.e}</span>
       <span class="cpm"><span class="cpt">${r.t}</span><span class="cps">${r.s} (${r.ref})</span></span>
-      <button class="cpcheck${rites[i]?' on':''}" data-rite="${i}">${rites[i]?'✓':''}</button>
+      <button type="button" role="checkbox" aria-checked="${rites[i]?'true':'false'}" class="cpcheck${rites[i]?' on':''}" data-rite="${i}">${rites[i]?'✓':''}</button>
     </div>`).join('');
   const body=document.getElementById('camp-body');
   body.innerHTML=`
@@ -2536,7 +2682,7 @@ function renderCamp(){
     <div class="dashcard">
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
         <div class="form-lbl" style="font-size:18px;margin:0;">📖 Seven Topics · Camp Progress</div>
-        <span style="margin-left:auto;color:var(--rose);font-weight:800;font-size:18px;">${tdone}/7</span>
+        <span id="camp-topic-count" style="margin-left:auto;color:var(--rose);font-weight:800;font-size:18px;">${tdone}/7</span>
       </div>
       <p class="a-intro" style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">After each topic, tap the check on the right; tap "View" anytime to review.</p>
       ${topicRows}
@@ -2545,7 +2691,7 @@ function renderCamp(){
     <div class="dashcard">
       <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
         <div class="form-lbl" style="font-size:18px;margin:0;">🤲 The Six Acts of Love · On-site</div>
-        <span style="margin-left:auto;color:var(--rose);font-weight:800;font-size:18px;">${rdone}/6</span>
+        <span id="camp-rite-count" style="margin-left:auto;color:var(--rose);font-weight:800;font-size:18px;">${rdone}/6</span>
       </div>
       <p class="a-intro" style="font-size:14px;color:var(--ink-soft);margin:0 0 12px;">Experience these six sacred acts one by one on-site, checking off each as you complete it.</p>
       ${riteRows}
@@ -2556,13 +2702,13 @@ function renderCamp(){
       <div class="form-lbl" style="font-size:18px;margin-bottom:6px;">🦪 A Moment at Camp · Your First Pearl</div>
       <p class="a-intro" style="font-size:14px;color:var(--ink-soft);margin:0 0 10px;">A word God spoke to you at camp, the moment that touched you most, the one you most want to keep. Write it down and string it as your first pearl.</p>
       <textarea class="depo" id="camp-moment" placeholder="e.g., As we washed each other's feet, I suddenly understood…">${esc(jget('camp_moment',''))}</textarea>
-      <div class="note-saved" id="camp-moment-saved" style="margin-bottom:8px;"></div>
+      <div class="note-saved" role="status" aria-live="polite" id="camp-moment-saved" style="margin-bottom:8px;"></div>
       <button class="bigbtn" id="camp-pearl" style="background:var(--purple);">Save this moment as a pearl 🦪</button>
-      <div class="saved" id="camp-pearl-saved"></div>
+      <div class="saved" role="status" aria-live="polite" id="camp-pearl-saved"></div>
     </div>
 
     <div class="dashcard">
-      <div class="minicard"><div class="mi">📜</div><div style="flex:1;"><div class="mt">Covenant On-site</div><div class="md">At camp, fill in your covenant together, read it aloud, and sign it—make your covenant before God.</div></div></div>
+      <div class="minicard"><div class="mi" aria-hidden="true">📜</div><div style="flex:1;"><div class="mt">Covenant On-site</div><div class="md">At camp, fill in your covenant together, read it aloud, and sign it—make your covenant before God.</div></div></div>
       <button class="bigbtn" id="camp-cov" style="background:var(--navy);margin-top:12px;">Go to The Covenant 📜</button>
     </div>
 
@@ -2570,13 +2716,19 @@ function renderCamp(){
       Turn what you receive at camp into daily practice once you're home. <b>Life first, then relationships, then ministry</b>—may Jesus have your marriage, and receive all the glory.
     </div>`;
   body.querySelectorAll('.cpcheck[data-tp]').forEach(b=>b.addEventListener('click',()=>{
-    const i=Number(b.dataset.tp), m=getCampProg(); m[i]=!m[i]; jset('camp_progress',m); renderCamp();
+    const i=Number(b.dataset.tp), m=getCampProg(); m[i]=!m[i]; jset('camp_progress',m);
+    b.classList.toggle('on', !!m[i]); b.setAttribute('aria-checked', m[i]?'true':'false'); b.textContent = m[i] ? '\u2713' : '';
+    const c=body.querySelector('#camp-topic-count');
+    if(c) c.textContent = TOPICS.filter((_,k)=>m[k]).length + '/' + TOPICS.length;
   }));
   body.querySelectorAll('.cpgo[data-go]').forEach(b=>b.addEventListener('click',()=>{
     campOpenTopic(Number(b.dataset.go));
   }));
   body.querySelectorAll('.cpcheck[data-rite]').forEach(b=>b.addEventListener('click',()=>{
-    const i=Number(b.dataset.rite), m=getCampRites(); m[i]=!m[i]; jset('camp_rites',m); renderCamp();
+    const i=Number(b.dataset.rite), m=getCampRites(); m[i]=!m[i]; jset('camp_rites',m);
+    b.classList.toggle('on', !!m[i]); b.setAttribute('aria-checked', m[i]?'true':'false'); b.textContent = m[i] ? '\u2713' : '';
+    const c=body.querySelector('#camp-rite-count');
+    if(c) c.textContent = CAMP_RITES.filter((_,k)=>m[k]).length + '/' + CAMP_RITES.length;
   }));
   body.querySelector('#camp-actions').addEventListener('click',()=>campJump(openActions));
   body.querySelector('#camp-cov').addEventListener('click',()=>campJump(openCovenant));
@@ -2728,6 +2880,7 @@ function renderFollowupList(){
   wrap.querySelectorAll('.tcard').forEach(c=>c.addEventListener('click',()=>openFollowup(Number(c.dataset.fi))));
 }
 function openFollowup(i){
+  rememberScroll('Followup');
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   ['detail','bankview','assessview','habitview','handview','actionsview','covenantview','pearlsview','groupview','prepview','campview'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
   document.getElementById('followupview').classList.add('active');
@@ -2738,7 +2891,7 @@ function closeFollowup(){
   document.getElementById('followupview').classList.remove('active');
   document.getElementById('page-followup').classList.add('active');
   if(typeof setTabActive==='function') setTabActive('page-followup');
-  window.scrollTo(0,0);
+  restoreScroll('Followup');
 }
 document.getElementById('fup-back').addEventListener('click',closeFollowup);
 function showFollowup(i){
@@ -2774,6 +2927,125 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
+/* ============ 備份與還原 ============ */
+const BACKUP_KEYS=['couple_profile','love_deposits','assessments','habits','topic_notes','topic_apply',
+  'compare_marks','covenant','pearls','group_info','prep_checklist','prep_prayer','prep_confession',
+  'camp_progress','camp_rites','camp_moment','fontScale'];
+let bkTimer=null;
+function bkMsg(t){ const s=document.getElementById('bk-saved'); if(!s) return;
+  s.textContent=t; clearTimeout(bkTimer); bkTimer=setTimeout(()=>{ s.textContent=''; },3200); }
+function buildBackup(){
+  const data={};
+  BACKUP_KEYS.forEach(k=>{ const v=store.get(k); if(v!==null&&v!==undefined) data[k]=v; });
+  return JSON.stringify({app:'321couples',version:1,exportedAt:new Date().toISOString(),data:data},null,2);
+}
+function backupStamp(){ const d=new Date(), p=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes()); }
+function renderBackupStat(){
+  const el=document.getElementById('bk-stat'); if(!el) return;
+  el.textContent=`Now: ${jget('love_deposits',[]).length} love deposits · ${jget('pearls',[]).length} pearls · ${jget('assessments',[]).length} assessments`;
+}
+function applyBackup(text){
+  let obj=null;
+  try{ obj=JSON.parse(text); }catch(e){ bkMsg('This backup could not be read — the format looks wrong.'); return; }
+  if(!obj||obj.app!=='321couples'||!obj.data||typeof obj.data!=='object'){ bkMsg('This is not a 321 Couples Growth Camp backup file.'); return; }
+  const n=Object.keys(obj.data).filter(k=>BACKUP_KEYS.indexOf(k)>=0).length;
+  if(!n){ bkMsg('There are no records to restore in this backup.'); return; }
+  if(!window.confirm('Restore this backup?\n\nIt will OVERWRITE every record currently on this phone, and cannot be undone.\nWe suggest you tap \u201cExport backup file\u201d first to save what you have now.')) return;
+  BACKUP_KEYS.forEach(k=>{ if(Object.prototype.hasOwnProperty.call(obj.data,k)) store.set(k,obj.data[k]); });
+  window.alert('Restore complete. The page will now reload.');
+  location.reload();
+}
+(function(){
+  const ex=document.getElementById('bk-export'); if(!ex) return;
+  ex.addEventListener('click',()=>{
+    renderBackupStat();
+    const txt=buildBackup();
+    try{
+      const blob=new Blob([txt],{type:'application/json'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url; a.download='321couples-backup-'+backupStamp()+'.json';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      bkMsg('Backup file created \u2713 Save it to Files or the cloud');
+    }catch(e){ bkMsg('This browser cannot download files. Please use \u201cCopy backup text\u201d instead.'); }
+  });
+  document.getElementById('bk-copy').addEventListener('click',()=>{
+    const txt=buildBackup();
+    const fallback=()=>{ const ta=document.getElementById('bk-paste'); ta.value=txt; ta.focus(); ta.select(); bkMsg('Filled into the box below \u2014 press and hold to select and copy.'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(()=>bkMsg('Backup text copied \u2713 Paste it into Notes or send it to yourself')).catch(fallback);
+    } else { fallback(); }
+  });
+  document.getElementById('bk-file').addEventListener('change',e=>{
+    const f=e.target.files&&e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>applyBackup(String(r.result));
+    r.onerror=()=>bkMsg('Could not read the file. Please try again.');
+    r.readAsText(f);
+    e.target.value='';
+  });
+  document.getElementById('bk-restore').addEventListener('click',()=>{
+    const t=(document.getElementById('bk-paste').value||'').trim();
+    if(!t){ bkMsg('Please paste your backup text first.'); return; }
+    applyBackup(t);
+  });
+  const usTab=document.querySelector('.tab[data-target="page-us"]');
+  if(usTab) usTab.addEventListener('click',renderBackupStat);
+  renderBackupStat();
+})();
+/* 儲存不可用時的警告 */
+(function(){
+  if(store.available) return;
+  const bar=document.createElement('div');
+  bar.className='warnbar'; bar.setAttribute('role','alert');
+  bar.textContent='\u26a0\ufe0f This browser cannot save data \u2014 your records will disappear when you leave. Open this page in Safari, then tap Share \u2192 Add to Home Screen.';
+  const brand=document.querySelector('.brandbar');
+  if(brand&&brand.parentNode) brand.insertAdjacentElement('afterend',bar);
+  else document.body.insertBefore(bar,document.body.firstChild);
+})();
+/* ============ 外觀主題 ============ */
+function getTheme(){ return store.get('theme')||'auto'; }
+function applyTheme(t){
+  const root=document.documentElement;
+  if(t==='auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme',t);
+  let dark = t==='dark';
+  if(t==='auto' && window.matchMedia) dark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const m=document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', dark? '#571630' : '#B0345A');
+}
+function renderThemeSeg(){
+  const seg=document.getElementById('theme-seg'); if(!seg) return;
+  const cur=getTheme();
+  seg.querySelectorAll('button').forEach(b=>{
+    const on=b.dataset.t===cur;
+    b.classList.toggle('on',on); b.setAttribute('aria-pressed', on?'true':'false');
+  });
+}
+(function(){
+  const seg=document.getElementById('theme-seg'); if(!seg) return;
+  seg.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    store.set('theme', b.dataset.t); applyTheme(b.dataset.t); renderThemeSeg();
+  });
+  applyTheme(getTheme()); renderThemeSeg();
+  if(window.matchMedia){
+    const mq=window.matchMedia('(prefers-color-scheme:dark)');
+    const h=()=>{ if(getTheme()==='auto') applyTheme('auto'); };
+    if(mq.addEventListener) mq.addEventListener('change',h); else if(mq.addListener) mq.addListener(h);
+  }
+})();
+/* ============ 無障礙：分頁狀態同步 ============ */
+(function(){
+  const sync=()=>document.querySelectorAll('.tab').forEach(t=>
+    t.setAttribute('aria-selected', t.classList.contains('active')?'true':'false'));
+  sync();
+  const bar=document.getElementById('tabbar');
+  if(bar) bar.addEventListener('click',()=>setTimeout(sync,0));
+  const _sta=window.setTabActive;
+  if(typeof _sta==='function'){ window.setTabActive=function(id){ _sta(id); sync(); }; }
+})();
 </script>
 </body>
 </html>
