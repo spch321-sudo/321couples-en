@@ -537,6 +537,21 @@
   @keyframes zpulse{0%,100%{opacity:1;}50%{opacity:.42;}}
   .zinfo{padding:11px 14px 13px;font-size:13.5px;color:var(--ink-soft);background:#FFFDFA;
     text-align:center;letter-spacing:.3px;line-height:1.6;}
+
+  /* ===== 晨讀321 入口 ===== */
+  .cdcard{display:block;text-decoration:none;color:inherit;padding:0;overflow:hidden;
+    border:2px solid #9FD8C4;background:linear-gradient(160deg,#F3FBF7 0%,#FFFDF6 100%);}
+  .cdtop{display:flex;align-items:center;gap:13px;padding:14px 15px 12px;}
+  .cdlogo{flex:0 0 auto;width:60px;height:60px;border-radius:15px;display:block;
+    box-shadow:0 3px 10px rgba(60,120,100,.22);border:1px solid rgba(255,255,255,.9);}
+  .cdm{flex:1;min-width:0;}
+  .cdt{font-size:19px;font-weight:800;color:var(--navy);line-height:1.35;}
+  .cds{font-size:13.5px;color:var(--ink-soft);margin-top:3px;line-height:1.5;}
+  .cdgo{flex:0 0 auto;font-size:15px;font-weight:800;color:#2E8B6E;white-space:nowrap;}
+  .cdlead{padding:0 15px 13px;font-size:14.5px;color:var(--ink);line-height:1.72;}
+  .cdlead b{color:#2E8B6E;}
+  .cdfoot{padding:9px 15px 11px;font-size:13px;color:var(--ink-soft);background:rgba(159,216,196,.16);
+    border-top:1px solid rgba(159,216,196,.5);text-align:center;line-height:1.6;}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
@@ -616,6 +631,19 @@
     </a>
     <div class="zinfo">Meeting ID: 819 397 2372 &nbsp;&middot;&nbsp; Passcode: 321</div>
   </div>
+
+  <a class="dashcard cdcard" id="cd-link" href="https://spch321-sudo.github.io/chendu321mvp-en/" target="_blank" rel="noopener">
+    <div class="cdtop">
+      <img class="cdlogo" src="data:image/jpeg;base64,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" alt="Morning Devotion 321">
+      <div class="cdm">
+        <div class="cdt">Morning Devotion 321</div>
+        <div class="cds">Daily Scripture &middot; Live out the 3-2-1 vision</div>
+      </div>
+      <div class="cdgo">Start &rsaquo;</div>
+    </div>
+    <div class="cdlead">The camp ends, but the journey doesn&rsquo;t. One lesson a day&mdash;<b>three foundations, two cores, one purpose</b>&mdash;so that truth keeps working in your marriage and Jesus reigns every day.</div>
+    <div class="cdfoot">📖 10 minutes a day &nbsp;&middot;&nbsp; Walking together with our fellowship family</div>
+  </a>
 </section>
 
 <!-- Journey (the three-stage camp journey) -->
@@ -2834,7 +2862,7 @@ renderFollowupList();
 
 /* ============ 空中團契 Zoom 聚會（台北時區 UTC+8 固定判斷） ============ */
 (function(){
-  var TZ = 480;               /* 台北時區：UTC+8 = 480 分鐘 */
+  var TZ = 480;               /* 台北時區：UTC+8 = 480 分鐘（若基準時區改變，只需改這一個數字） */
   var H12 = true;
   var D   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var T   = {live:'LIVE', soon:'SOON', you:'Your time', same:'📍 You are in the same time zone as Taipei'};
@@ -2873,18 +2901,12 @@ renderFollowupList();
     }
     return 999999;
   }
-
-  /* 將台北時間換算成使用者當地時間並顯示 */
   function renderLocal(){
     var diff = localOff() - TZ, i, m, r, el, ls, le, shift, d0, d1;
     for(i=0;i<MT.length;i++){
       m = MT[i]; r = row(m.k); if(!r) continue;
       el = r.querySelector('.zl'); if(!el) continue;
-      if(diff === 0){
-        el.className = 'zl show same';
-        el.innerHTML = T.same;
-        continue;
-      }
+      if(diff === 0){ el.className='zl show same'; el.innerHTML=T.same; continue; }
       ls = m.s + diff; le = m.e + diff;
       shift = Math.floor(ls/1440);
       d0 = ((m.days[0] + shift) % 7 + 7) % 7;
@@ -2894,8 +2916,6 @@ renderFollowupList();
                    + D[d0] + SEP + D[d1] + '\u3000' + fmt(ls) + SEP + fmt(le);
     }
   }
-
-  /* 依台北時間判斷進行中／即將開始 */
   function update(){
     var now = tpeNow(), nm = now.getHours()*60 + now.getMinutes(), dow = now.getDay();
     var i, m, r, badge, live, d, best=-1, bestIn=999999;
@@ -2917,10 +2937,8 @@ renderFollowupList();
       }
     }
   }
-
   if(document.querySelector('.zrow')){
-    renderLocal();
-    update();
+    renderLocal(); update();
     setInterval(update, 30000);
     document.addEventListener('visibilitychange', function(){ if(!document.hidden){ renderLocal(); update(); } });
   }
