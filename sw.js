@@ -1,64 +1,61 @@
-/* 321 Couples Growth Camp — Service Worker (network-first, auto-update)
-   How it works: HTML is always fetched network-first, so it loads the latest
-   version whenever online, and falls back to cache only when offline.
-   On each big release, bump the CACHE version string below (e.g. date + serial). */
+/* 321 夫妻成長營 — Service Worker
+   v25：HTML 改為「網路優先」，改版後家人一開就是新版，不會再卡舊畫面。
+   ※ 每次改版只要把下面的版本號 +1（v25 → v26），並上傳這個檔案即可。 */
+const CACHE = 'couples-321-v25';
+const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
 
-const CACHE = '321couples-en-2026-06-15-1';
-const CORE = [
-  './', './index.html', './manifest.webmanifest',
-  './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'
-];
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {}));
+});
 
-self.addEventListener('install', (e) => {
-  self.skipWaiting();                       // make the new version ready immediately
+self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(CORE).catch(() => {}))
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil((async () => {
-    const keys = await caches.keys();
-    await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))); // clear old caches
-    await self.clients.claim();             // take control of all tabs right away
-  })());
+self.addEventListener('message', e => {
+  if (e.data === 'SKIP_WAITING') self.skipWaiting();
 });
 
-self.addEventListener('fetch', (e) => {
+function isHTML(req) {
+  return req.mode === 'navigate' ||
+         (req.headers.get('accept') || '').indexOf('text/html') > -1;
+}
+
+self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
 
-  const isHTML =
-    req.mode === 'navigate' ||
-    (req.headers.get('accept') || '').includes('text/html');
+  /* 外部連結（Zoom、晨讀321…）一律交給瀏覽器，不攔截 */
+  let url;
+  try { url = new URL(req.url); } catch (err) { return; }
+  if (url.origin !== self.location.origin) return;
 
-  if (isHTML) {
-    // HTML: network-first -> get the latest; use cache only when offline
+  /* 網頁本身：網路優先 → 拿得到新版就用新版，離線才回快取 */
+  if (isHTML(req)) {
     e.respondWith(
-      fetch(req)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put('./index.html', copy));
-          return res;
-        })
-        .catch(() => caches.match(req).then((r) => r || caches.match('./index.html')))
+      fetch(req).then(res => {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+        return res;
+      }).catch(() => caches.match(req).then(hit => hit || caches.match('./index.html')))
     );
     return;
   }
 
-  // Other assets (icons, manifest…): cache-first, update in the background
+  /* 圖示等靜態檔：先給快取（快），同時背景更新（新） */
   e.respondWith(
-    caches.match(req).then((cached) => {
-      const net = fetch(req)
-        .then((res) => {
-          if (res && res.status === 200) {
-            const copy = res.clone();
-            caches.open(CACHE).then((c) => c.put(req, copy));
-          }
-          return res;
-        })
-        .catch(() => cached);
-      return cached || net;
+    caches.match(req).then(hit => {
+      const net = fetch(req).then(res => {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
+        return res;
+      }).catch(() => hit);
+      return hit || net;
     })
   );
 });
