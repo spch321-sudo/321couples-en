@@ -1,7 +1,7 @@
 /* 321 夫妻成長營 — Service Worker
-   v25：HTML 改為「網路優先」，改版後家人一開就是新版，不會再卡舊畫面。
-   ※ 每次改版只要把下面的版本號 +1（v25 → v26），並上傳這個檔案即可。 */
-const CACHE = 'couples-321-v25';
+   v26：HTML 改為「網路優先」，改版後家人一開就是新版，不會再卡舊畫面。
+   ※ 每次改版只要把下面的版本號 +1（v26 → v27），並上傳這個檔案即可。 */
+const CACHE = 'couples-321-v26';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
 
 self.addEventListener('install', e => {

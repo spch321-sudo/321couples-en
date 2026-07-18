@@ -579,6 +579,10 @@
     color:#8E6A1E;font-size:13.5px;font-weight:800;padding:8px 12px;border-radius:10px;
     cursor:pointer;white-space:nowrap;font-family:inherit;pointer-events:none;}
   .ofcopy.done{background:#2E8B6E;border-color:#2E8B6E;color:#fff;}
+  .ofqr{padding:14px;background:#fff;border-bottom:1px solid var(--line);text-align:center;}
+  .ofqrimg{width:200px;max-width:70%;height:auto;image-rendering:pixelated;
+    border:1px solid var(--line);border-radius:12px;padding:8px;background:#fff;}
+  .ofqrcap{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.55;font-weight:700;}
   .offoot{padding:11px 14px 13px;font-size:13px;color:var(--ink-soft);background:#FBF6EA;
     border-top:1px solid rgba(199,154,59,.35);text-align:center;line-height:1.65;}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
@@ -1078,17 +1082,18 @@
       </div>
       <button class="ofcopy" type="button" tabindex="-1">Copy</button>
     </div>
-    <div class="ofrow" data-copy="785-370-036-7" role="button" tabindex="0" aria-label="Singapore">
+    <div class="ofrow" data-copy="058-86163-4" role="button" tabindex="0" aria-label="Singapore">
       <div class="offlag">🇸🇬</div>
       <div class="ofm">
         <div class="ofc">Singapore</div>
-        <div class="ofn">Wong Seet Ting / Chong Ke Xin</div>
-        <div class="ofa">785-370-036-7</div>
-        <div class="ofb">United Overseas Bank (UOB) &middot; Stash Account</div>
-        <a class="oflink" href="https://www.uob.com.sg/" target="_blank" rel="noopener">🏦 Open bank site &rsaquo;</a>
+        <div class="ofn">Lee Chew Yong</div>
+        <div class="ofa">058-86163-4</div>
+        <div class="ofb">POSB Savings Account &middot; DBS/POSB</div>
+        <a class="oflink" href="https://www.posb.com.sg/" target="_blank" rel="noopener">🏦 Open bank site &rsaquo;</a>
       </div>
       <button class="ofcopy" type="button" tabindex="-1">Copy</button>
     </div>
+    <div class="ofqr"><img class="ofqrimg" src="data:image/png;base64,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" alt="PayNow QR"><div class="ofqrcap">Singapore PayNow &middot; Scan to give</div></div>
     <div class="ofrow" data-copy="12-3231-0055109-00" role="button" tabindex="0" aria-label="New Zealand">
       <div class="offlag">🇳🇿</div>
       <div class="ofm">
