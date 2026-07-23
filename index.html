@@ -750,16 +750,23 @@
 
   .rh-head{display:flex;align-items:center;gap:10px;cursor:pointer;flex-wrap:wrap;-webkit-tap-highlight-color:transparent;}
   .rh-head h2{margin:0;}
-  .rh-mini{margin-left:auto;font-size:14px;font-weight:800;color:#8A6A22;white-space:nowrap;}
-  .rh-mini b{color:#BF8F00;font-size:17px;}
-  .rh-chev{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:1.5px solid #D9BC6E;background:rgba(255,255,255,.55);
+  .rh-chev{flex:0 0 auto;margin-left:auto;width:30px;height:30px;border-radius:50%;border:1.5px solid #D9BC6E;background:rgba(255,255,255,.55);
     color:#8A6200;font-size:16px;line-height:1;cursor:pointer;transition:transform .25s ease;font-family:inherit;}
-  .ringhero .rh-body{overflow:hidden;max-height:2000px;opacity:1;transition:max-height .35s ease,opacity .3s ease,margin-top .3s ease;margin-top:2px;}
+  .ringhero .ringprog{margin-top:14px;}
+  .ringhero .rh-body{overflow:hidden;max-height:3000px;opacity:1;transition:max-height .35s ease,opacity .3s ease,margin-top .3s ease;margin-top:2px;}
   .ringhero.collapsed .rh-body{max-height:0;opacity:0;margin-top:0;pointer-events:none;}
   .ringhero.collapsed .rh-chev{transform:rotate(-90deg);}
-  .ringhero:not(.collapsed) .rh-mini{display:none;}
-  .rh-msgwrap{margin:4px 2px 18px;}
+  .ringhero.collapsed .ringprog{margin-bottom:2px;}
+  .rh-msgwrap{margin:16px 0 8px;}
   .rh-msgwrap .msg-open{margin-top:0;}
+  .ex-chips{display:flex;flex-direction:column;gap:7px;margin:0 0 14px;}
+  .ex-chip{text-align:left;border:1px solid #E7C3CE;background:#FFF7F9;color:#6a3548;border-radius:11px;
+    padding:9px 12px;font-size:14px;line-height:1.55;font-family:inherit;cursor:pointer;}
+  .ex-chip:active{background:#FBE4E9;}
+  .ex-lbl{font-size:12.5px;color:var(--ink-soft);margin:-4px 0 8px;}
+  .xz-back{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:999px;
+    padding:7px 13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
+  .xz-back:active{background:rgba(255,255,255,.32);}
 </style>
 </head>
 <body>
@@ -798,7 +805,7 @@
   </div>
   <div class="dashcard" id="anniv-card" style="cursor:pointer;">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-      <div class="form-lbl" style="font-size:18px;margin:0;">📅 Anniversary &amp; Covenant</div>
+      <div class="form-lbl" style="font-size:18px;margin:0;">📅 Anniversary &amp; Birthdays</div>
       <span class="arrow" style="margin-left:auto;">›</span>
     </div>
     <div id="anniv-body"></div>
@@ -941,6 +948,8 @@
         <button data-type="Blessing">Blessing</button>
       </div>
       <div class="hint" id="type-hint">Thank them for one thing—thank them for what they do for this home.</div>
+      <div class="ex-lbl" id="ex-lbl"></div>
+      <div class="ex-chips" id="ex-chips"></div>
 
       <div class="form-lbl">Your message</div>
       <textarea class="depo" id="depo-text" placeholder="e.g., Thank you for taking the kids today so I could focus on work."></textarea>
@@ -1135,6 +1144,10 @@
       <input type="text" id="pf-husband" placeholder="e.g., John" maxlength="12">
     </div>
     <div class="field">
+      <label>Husband's birthday</label>
+      <input type="date" id="pf-hbday" value="">
+    </div>
+    <div class="field">
       <label>Husband's love language (primary)</label>
       <select id="pf-hlove"></select>
     </div>
@@ -1145,6 +1158,10 @@
     <div class="field">
       <label>Wife's name</label>
       <input type="text" id="pf-wife" placeholder="e.g., Mary" maxlength="12">
+    </div>
+    <div class="field">
+      <label>Wife's birthday</label>
+      <input type="date" id="pf-wbday" value="">
     </div>
     <div class="field">
       <label>Wife's love language (primary)</label>
@@ -1444,24 +1461,24 @@ function renderRingMap(){
     ? `<div class="rp-win">${RING_UI.allDone}</div>`
     : `<div class="rp-head"><span class="rp-t">${RING_UI.progHead}</span><span class="rp-c">${RING_UI.progOf} <b>${cnt}</b> ${RING_UI.progUnit}</span></div>`;
   const prog = `<div class="ringprog${cnt>=7?' full':''}">${rpHead}<div class="rp-dots">${dots}</div></div>`;
-  const msg = (typeof window.msgHTML==='function') ? msgHTML(-1) : '';
+  const msgRaw = (typeof window.msgHTML==='function') ? msgHTML(-1) : '';
+  const msgBlock = msgRaw ? ('<div class="rh-msgwrap">'+msgRaw+'</div>') : '';
   box.innerHTML=`
     <div class="ringhero${open?'':' collapsed'}">
       <div class="rh-head" onclick="toggleRingHero(event)">
         <span class="rh-badge">${RING_UI.badge}</span>
         <h2>${RING_UI.h2}</h2>
-        <span class="rh-mini">${RING_UI.progOf} <b>${cnt}</b> ${RING_UI.progUnit}</span>
         <button class="rh-chev" aria-label="toggle">\u2304</button>
       </div>
+      ${prog}
       <div class="rh-body">
         <div class="rh-sub">${RING_UI.sub}</div>
         <div class="rh-quote">${RING_UI.quote}</div>
-        ${prog}
         <div class="ringchain">${links}</div>
         <div class="rh-foot">${RING_UI.foot}</div>
+        ${msgBlock}
       </div>
-    </div>
-    ${msg?`<div class="rh-msgwrap">${msg}</div>`:''}`;
+    </div>`;
   box.querySelectorAll('.rlink').forEach(el=>{
     el.addEventListener('click',()=>{ openTopic(Number(el.dataset.idx)); });
   });
@@ -1681,8 +1698,8 @@ document.getElementById('tabbar').addEventListener('click',e=>{
   window.scrollTo(0,0);
 });
 
-renderList();
-renderRingMap();
+try{ renderList(); }catch(e){ console.error("renderList failed:",e); }
+try{ renderRingMap(); }catch(e){ console.error("renderRingMap failed:",e); }
 
 /* ============ event delegation (replaces inline onclick; compatible with in-app browsers like LINE) ============ */
 document.getElementById('topiclist').addEventListener('click',e=>{
@@ -1705,7 +1722,7 @@ function jset(k,v){ store.set(k, JSON.stringify(v)); }
 
 /* ============ couple profile ============ */
 const LOVE_LANGS=['Physical touch','Words of affirmation','Quality time','Receiving gifts','Acts of service'];
-function getProfile(){ return jget('couple_profile',{husband:'',wife:'',hLove:'',hLove2:'',wLove:'',wLove2:''}); }
+function getProfile(){ return jget('couple_profile',{husband:'',wife:'',hLove:'',hLove2:'',wLove:'',wLove2:'',hBday:'',wBday:''}); }
 function fillSelect(sel){ sel.innerHTML='<option value="">(none)</option>'+LOVE_LANGS.map(l=>`<option>${l}</option>`).join(''); }
 function initProfileUI(){
   const p=getProfile();
@@ -1716,6 +1733,8 @@ function initProfileUI(){
   document.getElementById('pf-hlove2').value=p.hLove2||'';
   document.getElementById('pf-wlove').value=p.wLove||'';
   document.getElementById('pf-wlove2').value=p.wLove2||'';
+  document.getElementById('pf-hbday').value=p.hBday||'';
+  document.getElementById('pf-wbday').value=p.wBday||'';
 }
 document.getElementById('save-profile').addEventListener('click',()=>{
   jset('couple_profile',{
@@ -1724,7 +1743,9 @@ document.getElementById('save-profile').addEventListener('click',()=>{
     hLove:document.getElementById('pf-hlove').value,
     hLove2:document.getElementById('pf-hlove2').value,
     wLove:document.getElementById('pf-wlove').value,
-    wLove2:document.getElementById('pf-wlove2').value
+    wLove2:document.getElementById('pf-wlove2').value,
+    hBday:document.getElementById('pf-hbday').value,
+    wBday:document.getElementById('pf-wbday').value
   });
   const s=document.getElementById('pf-saved');
   s.textContent='Saved ✓'; setTimeout(()=>{s.textContent='';},2000);
@@ -1748,6 +1769,14 @@ const TYPE_HINTS={
   'Praise':'Praise one strength—they are God\'s masterpiece under construction.',
   'Blessing':'Bless one hope—speak a good word of faith over them.'
 };
+const TYPE_EXAMPLES={"Thanks": ["Thank you for picking up the kids today so I could focus on work.", "Thank you for listening patiently while I vented for so long.", "Thank you for washing the dishes last night so I could rest early."], "Praise": ["The way you handled the kids' emotions today was so wise and gentle.", "I really admire how you still trust God even in hard times.", "You've taken such good care of our home — that's not easy at all."], "Blessing": ["May God give you extra wisdom and peace in your work today.", "May God remember all your hard work and bless you doubly.", "May God's presence surround you wherever you go today."]};
+function renderExChips(){
+  const box=document.getElementById('ex-chips'), lbl=document.getElementById('ex-lbl');
+  if(!box) return;
+  const exs=TYPE_EXAMPLES[bankState.type]||[];
+  if(lbl) lbl.textContent = exs.length? "Tap to use this line:" : '';
+  box.innerHTML = exs.map(t=>`<button class="ex-chip">${t}</button>`).join('');
+}
 const TYPE_CLASS={'Thanks':'gan','Praise':'zan','Blessing':'zhu'};
 let bankState={to:'h',type:'Thanks'};
 let bankReturn='page-home';
@@ -1805,7 +1834,7 @@ function openBank(){
   document.getElementById('habitview').classList.remove('active');
   document.getElementById('handview').classList.remove('active');
   document.getElementById('bankview').classList.add('active');
-  renderBalance(); renderToSeg(); renderDepoList();
+  renderBalance(); renderToSeg(); renderDepoList(); renderExChips();
   window.scrollTo(0,0);
 }
 function closeBank(){
@@ -1827,6 +1856,11 @@ document.getElementById('seg-type').addEventListener('click',e=>{
   document.querySelectorAll('#seg-type button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
   document.getElementById('type-hint').textContent=TYPE_HINTS[bankState.type];
+  renderExChips();
+});
+document.getElementById('ex-chips').addEventListener('click',e=>{
+  const b=e.target.closest('.ex-chip'); if(!b) return;
+  const ta=document.getElementById('depo-text'); ta.value=b.textContent; ta.focus();
 });
 document.getElementById('save-depo').addEventListener('click',()=>{
   const ta=document.getElementById('depo-text'), text=ta.value.trim();
@@ -1843,10 +1877,10 @@ document.getElementById('depo-list').addEventListener('click',e=>{
 });
 
 /* ============ init ============ */
-initProfileUI();
-refreshNames();
-updateGreeting();
-renderBalance();
+try{ initProfileUI(); }catch(e){ console.error("initProfileUI failed:",e); }
+try{ refreshNames(); }catch(e){ console.error("refreshNames failed:",e); }
+try{ updateGreeting(); }catch(e){ console.error("updateGreeting failed:",e); }
+try{ renderBalance(); }catch(e){ console.error("renderBalance failed:",e); }
 
 /* ============ intimacy assessment ============ */
 const ASSESS2=['Money management','Feeling loved','Handling conflict','Sexual relationship','Sharing housework','Parenting','In-law relationships','Friendships','Leisure & recreation','Faith & religion'];
@@ -2134,7 +2168,7 @@ function renderHabitGrid(){
     </div>
     <div class="dashcard"><div class="minicard"><div class="mi">🌱</div><div><div class="mt">${totalDone} completions in the last 14 days</div><div class="md">Habits are an extension of love deposits—Jesus does the hard part, we do the simple part, and surely better and better.</div></div></div></div>`;
 }
-renderHabitToday();
+try{ renderHabitToday(); }catch(e){ console.error("renderHabitToday failed:",e); }
 
 /* ============ reconciliation tool · hand of communication ============ */
 const HAND_STEPS=[
@@ -2479,11 +2513,16 @@ function annivLine(emoji,label,dateStr){
   const txt=a.days===0? 'Today! 🎉' : `${a.days} days to go`;
   return `<div class="anniv-line"><span class="ae">${emoji}</span><span>${label} — ${a.years}-year anniversary</span><span class="ad${a.days===0?' today':''}">${txt}</span></div>`;
 }
+function birthdayLine(emoji,name,dateStr){
+  const a=nextAnniv(dateStr); if(!a) return '';
+  const txt=a.days===0? 'Happy birthday! \ud83c\udf89' : `${a.days} days to go`;
+  return `<div class="anniv-line"><span class="ae">${emoji}</span><span>${name}\u2019s birthday (turning ${a.years})</span><span class="ad${a.days===0?' today':''}">${txt}</span></div>`;
+}
 function renderAnniv(){
   const wrap=document.getElementById('anniv-body'); if(!wrap) return;
-  const c=getCovenant();
-  const lines=annivLine('💍','Wedding',c.marriageDate)+annivLine('📜','Covenant',c.covenantDate);
-  wrap.innerHTML=lines||'<div class="anniv-empty">No anniversaries set yet. Under "Growth → The Covenant," fill in your wedding and covenant dates, and a countdown will appear here.</div>';
+  const c=getCovenant(), p=getProfile();
+  const lines=annivLine('💍','Wedding',c.marriageDate)+birthdayLine('🎂',NAMES.h||'Husband',p.hBday)+birthdayLine('🎂',NAMES.w||'Wife',p.wBday);
+  wrap.innerHTML=lines||'<div class="anniv-empty">No dates set yet. Under "Growth \u2192 The Covenant," fill in your wedding date, and under "Us," fill in both birthdays \u2014 a countdown will appear here.</div>';
 }
 function openCovenant(){
   bankReturn=(document.querySelector('.page.active')||{id:'page-grow'}).id;
@@ -2503,14 +2542,15 @@ document.getElementById('anniv-card').addEventListener('click',openCovenant);
 document.getElementById('open-covenant').addEventListener('click',openCovenant);
 document.getElementById('covenant-back').addEventListener('click',closeCovenant);
 function renderCovenant(){
-  const c=getCovenant(), body=document.getElementById('covenant-body');
+  const c=getCovenant(), p=getProfile(), body=document.getElementById('covenant-body');
   body.innerHTML=`
     <div class="hand-reminder">
       This is the covenant you made before God. On each wedding or covenant anniversary, read it together and declare it afresh—<b>renew your covenant</b>—so Christ reigns in your marriage always.
     </div>
     <div class="dashcard">
       <div class="field"><label>💍 Wedding anniversary</label><input type="date" id="cov-marriage" value="${c.marriageDate||''}"></div>
-      <div class="field" style="margin-bottom:0;"><label>📜 Covenant date</label><input type="date" id="cov-covenant" value="${c.covenantDate||''}"></div>
+      <div class="field"><label>🎂 Husband's birthday</label><input type="date" id="cov-hbday" value="${p.hBday||''}"></div>
+      <div class="field" style="margin-bottom:0;"><label>🎂 Wife's birthday</label><input type="date" id="cov-wbday" value="${p.wBday||''}"></div>
     </div>
     <div class="dashcard">
       <div class="field" style="margin-bottom:10px;"><label>Our covenant</label>
@@ -2532,17 +2572,22 @@ function renderCovenant(){
   body.querySelector('#cov-save').addEventListener('click',()=>{
     jset('covenant',{
       marriageDate:body.querySelector('#cov-marriage').value,
-      covenantDate:body.querySelector('#cov-covenant').value,
+      covenantDate:getCovenant().covenantDate,
       vow:body.querySelector('#cov-vow').value,
       hVow:body.querySelector('#cov-hvow').value,
       wVow:body.querySelector('#cov-wvow').value
     });
+    const prof=getProfile();
+    prof.hBday=body.querySelector('#cov-hbday').value;
+    prof.wBday=body.querySelector('#cov-wbday').value;
+    jset('couple_profile',prof);
+    if(typeof initProfileUI==='function') initProfileUI();
     const s=body.querySelector('#cov-saved'); s.textContent='Saved ✓'; setTimeout(()=>{s.textContent='';},2000);
     renderAnniv();
   });
   window.scrollTo(0,0);
 }
-renderAnniv();
+try{ renderAnniv(); }catch(e){ console.error("renderAnniv failed:",e); }
 
 /* ============ home of love: directory & follow-up ============ */
 let groupDraft=null;
@@ -2654,7 +2699,7 @@ function renderGroup(){
 }
 document.getElementById('open-group').addEventListener('click',openGroup);
 document.getElementById('group-back').addEventListener('click',closeGroup);
-updateBrand();
+try{ updateBrand(); }catch(e){ console.error("updateBrand failed:",e); }
 
 /* ============ text size ============ */
 function getFontScale(){ return store.get('fontScale')||'1.15'; }
@@ -2671,7 +2716,7 @@ document.getElementById('font-seg').addEventListener('click',e=>{
   renderFontSeg();
 });
 applyFontScale(getFontScale());
-renderFontSeg();
+try{ renderFontSeg(); }catch(e){ console.error("renderFontSeg failed:",e); }
 
 /* ============ pearl moments ============ */
 const PEARL_CATS=[{k:'Times',e:'🎉'},{k:'Events',e:'🍽️'},{k:'Keepsakes',e:'🎁'},{k:'Memories',e:'💭'}];
@@ -3199,7 +3244,7 @@ function showFollowup(i){
     +`<div class="pcard"><div class="ptag">✦ Living Out the 321 Principle</div><p>${f.pin}</p></div>`;
   window.scrollTo(0,0);
 }
-renderFollowupList();
+try{ renderFollowupList(); }catch(e){ console.error("renderFollowupList failed:",e); }
 
 /* ============ PWA offline registration ============ */
 if('serviceWorker' in navigator){
@@ -3222,7 +3267,7 @@ if('serviceWorker' in navigator){
   var SPEECH_LANG="en-US";           /* 瀏覽器備援語言 */
   var XZ_TOPICS=[{"c": "Marriage Vision & Foundation", "qs": ["What is God's heart and design for marriage?", "Why 'life first, then relationship, then ministry'?", "On what foundation must a marriage be built to stand firm?", "How does 'a threefold cord' relate to our marriage?", "How can a couple set a shared vision for marriage?", "What does 'building God's system' look like at home?", "Can our marriage glorify God? How?", "Why is marriage meant to make us holy, not just happy?", "How do we let Jesus reign as the center of our marriage?", "We've lost our first love—how do we recover the vision?", "What blessings come when a couple is truly united?", "How do we write a shared mission statement for our marriage?", "When storms come, how does a strong foundation help us stand?", "Why does 'focus on Jesus' protect a marriage?", "How do we live out the 321 principle in marriage?", "What is the ultimate purpose of marriage?", "How do we understand the mystery of 'two becoming one'?", "What spiritual habits should a couple build together?", "How can our home become territory of God's kingdom?", "How can we pray for God to establish our marriage?"]}, {"c": "A Humble, Selfless Life (Ring 1)", "qs": ["What is a 'selfless' life, and how does it relate to marriage?", "Why is 'self' the root of marriage problems?", "How do we put off the old self and put on the new in marriage?", "How does pride quietly destroy a couple's relationship?", "How do I apply 'humility overcomes pride' during a fight?", "I find it hard to admit fault—how do I practice humility?", "Does being selfless mean I always give in and suffer?", "How is 'denying self' different from 'selflessness'?", "The old self keeps resurfacing—how do I put it to death daily?", "Why can we only be united when we are selfless?", "How do I let Christ live in me instead of ruling myself?", "I always feel it's my spouse's fault—how do I see my own?", "How is humility different from weakness?", "How do I choose humble selflessness even in small things?", "What change does a selfless life bring to a marriage?", "How do I let go of insisting 'I'm right'?", "How do I ask the Spirit to help me live selflessly?", "If my spouse hasn't changed, do I lose out by going first?", "How is humility the key to revival in our marriage?", "How can I pray for a selfless heart?"]}, {"c": "Living Out 321 in Marriage (Ring 2)", "qs": ["How do we 'let Jesus reign' in marriage?", "How can a couple practice 'trust the Spirit, not self'?", "How do we live out 'let Jesus receive all the glory' at home?", "How do the three foundations apply to marriage?", "How do we make Jesus our example as a couple?", "How does the Bible become the standard for our marriage?", "How do we seek and follow the Spirit's leading together?", "How do the eight steps of renewing the mind apply to marriage?", "How do I shift from a human view to God's view of my spouse?", "What does 'change begins with me' mean in marriage?", "Our values differ—how do we align through 321?", "How do we make 321 our daily way of life?", "When I want to control my spouse, how do I let God be God?", "How do I practice 'leaving my position and laying down power'?", "When focus drifts to self or circumstances, how do I return to Jesus?", "How does 321 help us turn defeat into victory?", "How do I bring my spouse along to learn 321?", "After living out 321, how will our marriage be different?", "How do I remember 321 in the heat of conflict?", "How can we pray to live out 321 every day?"]}, {"c": "See, Hear, Think, Speak, Act (Ring 3)", "qs": ["What does it mean to 'see' my spouse with Jesus' life?", "How do I view my spouse's weakness with the Lord's eyes?", "How do I practice 'hearing' instead of rushing to respond?", "I interrupt easily—how do I improve?", "How do I let the Spirit rule my 'thinking' before I speak?", "Negative thoughts make me bring up the past—what do I do?", "How do I let my words bring life?", "My words hurt easily—how do I let the Spirit govern my tongue?", "How do I turn 'action' into an expression of love?", "I know but can't do it—how do I move from knowing to doing?", "How do I stay selfless in every step of see-hear-think-speak-act?", "I blurted out words I regret—how do I make it right?", "How do I replace criticism with praise?", "How do I learn to appreciate instead of nitpick?", "When I see my spouse's faults and get irritated, how do I reframe?", "How do I fill our conversations with grace?", "How do I practice 'slow to speak, quick to listen'?", "When negative emotions rise, how do I pause before responding?", "How do I repair with action the words that hurt my spouse?", "How can I pray for God to govern my seeing, hearing, thinking, speaking, and acting?"]}, {"c": "Oneness as a Couple (Ring 4)", "qs": ["What does 'two becoming one flesh' really mean?", "Why can we only be one when we are selfless?", "Our personalities differ greatly—how do we move toward oneness?", "Does oneness mean one person always yields to the other?", "How do we reach agreement in decisions?", "How do we practice oneness in spirit?", "How do body, mind, and spirit oneness differ?", "We live parallel lives—how do we reconnect?", "How do we appreciate and complement each other in our differences?", "We split over small things—how do we return to oneness?", "How do we experience oneness through praying together?", "How do we keep kids or work from replacing our connection?", "When oneness is broken, how do we rebuild it?", "How do we agree on money and parenting?", "How do we become each other's spiritual companions?", "How do I tell 'oneness' from 'losing myself'?", "How do we let God be the center of our oneness?", "We've grown cold and distant—how do we rekindle oneness?", "What power does oneness bring to a family?", "How can we pray to become truly one?"]}, {"c": "Love Languages & Love Deposits (Ring 5)", "qs": ["What are the five love languages, and how do I find my spouse's?", "What is a 'love deposit' in marriage?", "I give so much but my spouse doesn't feel it—why?", "How do I love my spouse in his or her love language?", "How do I make love deposits every day?", "Which behaviors are withdrawals that hurt the relationship?", "How do I speak words of affirmation sincerely?", "How do we plan quality time?", "How do acts of service express love?", "How do I practice the love language of receiving gifts?", "How important is physical touch to marriage?", "Our love languages differ—how do we bridge the gap?", "How do I give love with a selfless heart?", "What happens to a marriage when love deposits run low?", "How do I keep making deposits when life is busy?", "We lost our couple time after kids—what now?", "How do I make expressing love a habit?", "How do we commit together to tending our love account?", "I've given one-sidedly for a long time—how do I persevere?", "How can I pray to love my spouse the right way?"]}, {"c": "Conflict & Repair (Ring 6)", "qs": ["Is conflict inevitable in marriage? Is it always bad?", "How do I handle conflict with humble selflessness?", "How do we fight without dredging up the past or attacking character?", "We've been in a cold war—how do we take the first step to reconcile?", "When emotions flare mid-argument, how do I call a timeout?", "How do we 'address the heart before the issue'?", "If I apologize first, does that mean I lost?", "How do I sincerely admit fault and apologize?", "What are the concrete steps to repair the relationship?", "Why does repair matter more than winning?", "How do we keep conflict from escalating?", "We keep fighting over the same thing—how do we get to the root?", "How do we rebuild a sense of safety after conflict?", "How do I tell a difference of opinion from a heart wound?", "My spouse won't talk—how do I handle that?", "How do we turn conflict into a chance to know each other better?", "How do I use 'I' statements instead of blame?", "How do we pray together to repair after conflict?", "How do we slowly heal long-standing hurt?", "How can we pray to resolve conflict with love?"]}, {"c": "Commitment & Covenant (Ring 7)", "qs": ["How is a marriage covenant different from a contract?", "What does 'humbly and selflessly committing to keep the covenant' mean?", "When the spark fades, should I still stay committed?", "How do I hold to commitment through the ordinary seasons?", "When I want to give up, how do I keep the covenant?", "Is commitment powered by willpower or by grace?", "How do we renew our covenant and commitment?", "Why does commitment bring a sense of security?", "How do I guard the boundaries of marriage in temptation?", "My spouse disappointed me—do I still stay committed?", "How do I turn commitment into a daily choice?", "Which comes first, commitment or the feeling of love?", "How do we guard our marriage from erosion together?", "How do we live out 'for richer or poorer, in sickness and health'?", "How do we stay faithful through hard seasons?", "How do we make our commitment a blessing and example to our children?", "Facing outside temptation, how do we hold firm to the covenant?", "How do we pray for each other to keep our commitment?", "What is the secret to a lifelong commitment?", "How can we pray for God to strengthen our commitment?"]}, {"c": "Communication & Listening", "qs": ["Why does every conversation turn into a fight?", "How do I learn to truly listen?", "My words carry a sting—how do I change?", "How do I express a need without blaming my spouse?", "My spouse doesn't talk much—how do I open the door?", "How do I avoid 'you always, you never'?", "How do I hear the need behind my spouse's emotions?", "How do I empathize first, then respond?", "How do we set a regular time for heart-to-heart talks?", "Texts get misread easily—how do we communicate well?", "How do we discuss well when we disagree?", "How do I help my spouse feel understood and respected?", "How do I avoid using silence or the cold shoulder as a weapon?", "I've said it many times and my spouse still doesn't listen—what now?", "How do I use a gentle answer to turn away wrath?", "How do I make love deposits in conversation?", "How do I practice 'slow to speak, quick to listen'?", "How do we discuss major decisions well together?", "How do we seek God's heart together in our communication?", "How can we pray for God to govern our tongues and ears?"]}, {"c": "Forgiveness & Healing", "qs": ["My spouse deeply hurt me—how do I forgive?", "Does forgiving mean my spouse was not wrong?", "How do I forgive yet protect myself from being hurt again?", "I say I forgive but can't let go inside—what do I do?", "How do I deal with accumulated bitterness in marriage?", "Old wounds keep resurfacing—how do I find healing?", "How many times must I forgive?", "How do I ask God to heal my inner wounds?", "How do I apologize to the spouse I once hurt?", "How do I slowly walk out of the wound of betrayal?", "How do we rebuild trust after forgiving?", "How do I forgive myself for past mistakes?", "How do wounds from my family of origin affect my marriage?", "How do I stop projecting old wounds onto my spouse?", "How do we pray together for mutual healing?", "Where does the power to forgive come from?", "How do I experience God's release through forgiveness?", "My spouse isn't repentant—must I still forgive?", "How do I let the love of the cross heal us?", "How can I pray to forgive and be healed?"]}, {"c": "Intimacy & Sex", "qs": ["How should Christians view sex within marriage?", "What role does sex play in marriage?", "How do we talk openly about each other's intimacy needs?", "Exhaustion affects intimacy—what do we do?", "How do we nurture physical intimacy amid busyness?", "We have different expectations about sex—how do we align?", "Past hurt affects intimacy—how do we heal?", "How do we make intimacy about the heart, not just the body?", "How do we create a safe, loving atmosphere for intimacy?", "Intimacy dropped after having kids—what now?", "How do we view each other's body with love and respect?", "Facing temptation and lust, how do we keep purity?", "How do we reject the way pornography erodes marriage?", "Intimacy has gone cold—how do we rekindle it?", "How do I gently express my own needs?", "When weak or ill, how do we keep intimacy alive?", "How does intimacy become a love deposit?", "How are we selfless and self-giving in intimacy?", "How do we offer our marital intimacy to God together?", "How can we pray for God to renew our intimacy?"]}, {"c": "Money & Finances", "qs": ["How do we build a united view of money?", "We often fight about money—how do we solve it?", "How do we plan our family budget and giving together?", "Who should manage the money—how do we divide roles yet stay united?", "Facing debt pressure, how do we face it together?", "Our spending habits differ greatly—how do we align?", "We disagree on tithing—what do we do?", "How do we learn contentment together in lack?", "How do we face financial anxiety by faith?", "How do we tell needs from wants?", "What should our motive for earning money be?", "How do we keep money from becoming an idol at home?", "How do we set a budget and keep it faithfully together?", "One spouse hides spending (financial unfaithfulness)—what now?", "How do we teach our children a right view of money?", "How do we face a sudden gain or loss?", "How do we seek God's leading together on investing or buying a home?", "How do we bless others and God's kingdom with money?", "How does managing money glorify God?", "How can we pray for wisdom and unity in finances?"]}, {"c": "In-laws & Family of Origin", "qs": ["How do we handle the relationship with in-laws?", "My spouse listens too much to their parents—what now?", "How do we balance honoring parents with building our own home?", "In-laws interfere in our marriage—how do we set boundaries?", "How do we 'leave father and mother and cleave to our spouse'?", "How do patterns from my family of origin affect my marriage?", "How do we coordinate both families during holidays?", "How do we love our spouse's family even when it's hard?", "In mother-in-law tensions, what role should the husband play?", "How do I stop venting my frustration with my family on my spouse?", "How do we build the rules of our own home together?", "Parents compare and criticize us—how do we respond?", "How do I forgive wounds from my family of origin?", "How do we handle money dealings with in-laws?", "How do we pray for both sets of parents' salvation?", "How do we present a united front before in-laws?", "How do I heal family-of-origin wounds before bringing them into marriage?", "Grandparents clash with us over parenting—what now?", "How do we treat in-laws with selfless love?", "How can we pray for wisdom in the in-law relationship?"]}, {"c": "Raising Children", "qs": ["How do we stay united in parenting?", "We parent differently—how do we align?", "How do we lead our children to know Jesus from young?", "How do we balance discipline and tenderness?", "How do we build worship and family prayer at home?", "Our child talks back and rebels—what do we do?", "How do we influence our kids by example, not lectures?", "How do we walk alongside a teenager?", "Our child is addicted to the phone—how do we guide together?", "How do we avoid arguing in front of the children?", "How do we keep from putting our marriage problems on the kids?", "How do we pray together for our children's future?", "How do we apply 'lead—accompany—release' in parenting?", "How do we cultivate our children's character and faith?", "Our child goes their own way—how do we watch and pray without giving up?", "How do we avoid child-centeredness that neglects our marriage?", "How do we let our kids see the example of parents who love each other?", "When only one parent leads in faith, how do we stay united?", "How do we build a godly family system for our children?", "How can we pray for wisdom in raising our children?"]}, {"c": "Devotions & Prayer Together", "qs": ["How do we begin having devotions together?", "My spouse isn't interested in reading the Bible together—what now?", "How do we build a habit of praying in agreement?", "Our devotions keep getting interrupted—how do we persevere?", "What special power is there when a couple prays together?", "How do we intercede for each other's weaknesses?", "How do we set a devotional time that fits us?", "How do we bring our struggles before God together?", "We disagree during devotions—how do we handle it?", "How do we pray for our marriage with the words of Scripture?", "How do we worship together and experience God's presence?", "How do we lead the whole family in morning devotions?", "We're at different spiritual paces—how do we walk together?", "How do we keep shared devotions amid busyness?", "How do we watch and pray together for our kids and home?", "How do devotions together help a couple become one?", "How do we confess honestly to each other in devotions?", "How do we weave the 321 principle into our devotions?", "How do we make prayer our very breath?", "How can we pray to become a praying couple?"]}, {"c": "Emotions & Inner Life", "qs": ["When emotions rise, how do I not hurt my spouse?", "How do I handle anger in marriage?", "I'm often anxious and restless—how do I find peace?", "I'm disappointed in my spouse and feeling low—what do I do?", "How do I bring negative emotions before God?", "How do I tell emotion from fact?", "How is the bitterness in my heart released?", "I feel misunderstood and lonely—what do I do?", "How do I stay 'in the heart, not the head' amid emotions?", "How do I deal with jealousy and comparison?", "Past shame affects my marriage—how do I face it?", "How do I forgive and accept myself?", "How do I comfort my discouraged spouse?", "When my spouse is emotional, how do I respond?", "How do I not get swept along by my spouse's emotions?", "When my heart is unsettled, how do I return to God?", "How do I let God's peace rule my heart?", "How do I recognize and face emotional manipulation?", "How do I heal inner wounds that affect my marriage?", "How can I pray for God to heal my inner life?"]}, {"c": "An Unbelieving or Unequal Spouse", "qs": ["My spouse isn't yet saved—what should I do?", "How do I influence my spouse by life, not nagging?", "We're at different places in faith—how do we live in harmony?", "How do I pray for my unbelieving spouse?", "My spouse objects to my going to church—what do I do?", "How do I balance faith and marriage?", "How do I respect my spouse while holding to my faith?", "How do we coordinate our children's faith with an unbelieving spouse?", "My spouse believes but is lukewarm—what now?", "How do I not judge my spouse over our faith difference?", "How do I invite my spouse to know Jesus?", "Spiritually lonely, how do I lean on God?", "How do I let our home atmosphere witness to the beauty of faith?", "My spouse's family follows another religion—how do we relate?", "How do we seek oneness in a spiritually mixed marriage?", "When should I stand firm, and when should I be gentle?", "How do I fully entrust my spouse's salvation to God?", "How do I not lose hope or give up while waiting?", "How do I win my spouse's heart with selfless love?", "How can I pray for God to win my spouse's heart?"]}, {"c": "Crisis & Affair Recovery", "qs": ["Our marriage hit rock bottom—is there still hope?", "Facing the wound of an affair, how do we find healing?", "After betrayal, how do we rebuild trust?", "How does the one who failed truly repent and win back trust?", "In crisis, how do we avoid rash decisions?", "How do I handle the anger and thoughts of revenge?", "When thoughts of separation come, what do we do?", "How do we grasp God's hope in the brokenness?", "Can we reconcile after an affair? How do we begin?", "How do I forgive the spouse who betrayed me?", "How does the wounded one slowly walk it out?", "How do we cut off the illicit relationship and temptation?", "How do we seek help from the church and counselors in crisis?", "How do we avoid telling the crisis to the wrong people?", "How do we pray in agreement for a marriage on the brink?", "Our kids are affected by the crisis—how do we protect them?", "How do we let God work and turn things around in the impossible?", "After the crisis, how do we build a healthier marriage?", "When should we seek professional help?", "How can we pray for God to rescue our marriage on the brink?"]}, {"c": "Roles, Boundaries & Respect", "qs": ["How does the Bible view the roles of husband and wife?", "How do 'submission' and 'self-giving love' work together?", "How do we respect one another without controlling each other?", "How do we set healthy boundaries in marriage?", "One spouse is over-controlling—how do we face it?", "How do I tell submission from losing myself?", "How does a husband love his wife as Christ loves the church?", "How does a wife support her husband with respect?", "How do we divide chores and duties yet stay united?", "How do we avoid a power struggle?", "How do we appreciate and complete each other in our differences?", "How do we balance closeness and personal space?", "When I feel looked down on and disrespected, how do I respond?", "How do we use humility to defuse a struggle over control?", "In decisions, how do we respect each other and reach agreement?", "How do we keep work or the phone from blurring marriage boundaries?", "How do we build household rules we both agree on?", "How do we live out selfless love within our roles?", "How does respect become a love deposit?", "How can we pray to respect and complete each other?"]}, {"c": "Keeping Love Fresh · Journeying to Heaven Together", "qs": ["How do we keep our marriage fresh and not grow cold?", "After many years, how do we rekindle the fire of love?", "How do we plan date times just for the two of us?", "How do we keep creating surprises and touching moments for each other?", "How do empty-nesters reconnect?", "How do we nurture romance in ordinary days?", "How do we set shared goals and dreams together?", "How do we serve together and journey to heaven as one?", "How do we celebrate anniversaries and count God's blessings?", "How do we cherish each other as we grow old?", "How do we keep speaking appreciation and thanks?", "How do we make our marriage a blessing and witness to others?", "After retirement, how do we plan a meaningful married life?", "How do we face the changes of the second half of life together?", "How do we turn everyday life into gratitude?", "How do we let our children see the example of parents growing old together?", "How do we prepare together to meet the Lord and finish the journey?", "What does being 'heirs together of the grace of life' mean?", "How do we let our love reflect Christ and the church?", "How can we pray for God to keep our love to the end?"]}];
   var UI={"name": "Sage", "role": "Marriage Companion · focusing on Jesus", "hello": "Peace! I'm Sage ✨ - the AI marriage companion of the 321 Couples Growth Camp. Ask me anything about marriage, communication, parenting, forgiveness, or the 321 principle. Tap a topic below, or just type your question, and I'll help you focus on Jesus 🙏", "placeholder": "Ask Sage…", "send": "Send", "speak": "Read aloud", "typing": "Sage is replying…", "noans": "Sage can't find the right words just now, but God's word never fails. Want to ask another way?", "offline": "Sage can't connect right now; please try again later 🙏\nRemember, your best companion is the Holy Spirit and God's word - you can always pour out your heart to the Lord and pray with your spouse.", "note": "Sage is an AI companion and cannot replace the Holy Spirit, God's word, or real spiritual companions 🙏", "voiceLbl": "Voice", "nativeVoice": "Device"};
-  UI.collapse="Collapse"; UI.expand="Expand"; UI.fav="Save"; UI.faved="Saved"; UI.del="Delete"; UI.favTitle="Saved answers"; UI.favEmpty="No saved answers yet.\nTap “☆ Save” under an answer to keep it here."; UI.card="Image"; 
+  UI.collapse="Collapse"; UI.expand="Expand"; UI.fav="Save"; UI.faved="Saved"; UI.del="Delete"; UI.favTitle="Saved answers"; UI.favEmpty="No saved answers yet.\nTap “☆ Save” under an answer to keep it here."; UI.card="Image"; UI.back="Back"; 
   var XZ_SYS="You are 'Sage', the AI marriage companion inside the '321 Couples Growth Camp · Kingdom 321 Air Fellowship' app - like a humble, warm, hope-filled spiritual friend walking alongside married couples.\n\n[Your boundaries and heart - most important]\n1. You are not the Holy Spirit and cannot replace God; you never replace real pastors, spiritual parents, or spiritual companions.\n2. You always point the couple to Jesus, the Bible, prayer, and the Spirit's leading, and encourage them to talk well with their spouse and connect with a spiritual community (235: spiritual companions, spiritual parents and children, spiritual co-warriors).\n3. The focus is on Jesus - not on you, and not on either spouse's self.\n\n[The 321 principle is the foundation of every reply]\nThree foundations: Jesus is my example, the Bible is my standard, the Holy Spirit is my guide. Two cores: let Jesus reign; let Jesus receive all the glory. One purpose: build God's system (a realm of God's kingdom within the home).\nCore life: selflessness (no longer I, but Christ living in me), humility overcoming pride, life first then relationship then ministry, trusting the Spirit rather than leaning on self. Marriage practices: 920, 235, and the seven rings of victory (choosing the right life, direction, steps, union, ways, repair, and commitment).\nHelp couples see that the old self and pride are the root of marriage problems; only by living selfless and humble through the gospel can they be one, overcome, and turn defeat into victory - in the Lord they will surely win.\n\n[Style]\nReply in English. Quote Scripture only when you are sure, and never fabricate a verse or reference; if unsure, say so or invite them to look it up.\nBe clear, warm, and hopeful, using simple language and apt illustrations, like a caring pastor. Keep replies concise (usually three to six sentences), give one or two small steps they can practice right away, and often point toward prayer.\n\n[Answer format - important, because replies may be read aloud by a real human voice]\n1. Use natural, spoken, easy-to-read language, as if talking face to face.\n2. Never use tables or vertical bars to separate columns; when comparing, explain in plain sentences.\n3. Do not use Markdown: no hash headings, no double-asterisk bold, no greater-than quotes, no bullet points. Emphasize with words instead.\n4. Write Scripture references so they read aloud clearly, for example 'Ephesians chapter five verse twenty-five'.\n5. Keep paragraphs short and easy to hear.\n\n[Safety]\nServe only within faith, marriage and family, spiritual growth, character and life application, praying for others, and encouragement.\nFor affairs, abuse, self-harm, or serious mental-health crises, offer spiritual comfort and also gently encourage seeking a trusted pastor and professional help; do not pretend to be an expert, diagnose, or judge.\nIf they ask you to pray for them or their marriage, you may pray a short, biblical prayer, and encourage them to open their heart to God and pray with their spouse.";
 
   function gS(k,d){ try{ return (typeof jget==="function")?jget(k,d):d; }catch(e){ return d; } }
@@ -3287,8 +3332,11 @@ if('serviceWorker' in navigator){
   function normalizeSpeech(t){
     t=String(t||"");
     t=expandRefs(t);
-    t=t.replace(/[\u300c\u300d\u300e\u300f\u201c\u201d]/g,"");   /* 引號不必念 */
-    t=t.replace(/[\u25cf\u25cb\u25aa\u2022\u2013\u2014]/g,"\uff0c");
+    t=t.replace(/(^|[^0-9])321(?![0-9])/g,function(m,p1){ return p1+"three two one"; });
+    t=t.replace(/(^|[^0-9])920(?![0-9])/g,function(m,p1){ return p1+"nine two zero"; });
+    t=t.replace(/(^|[^0-9])235(?![0-9])/g,function(m,p1){ return p1+"two three five"; });
+    t=t.replace(/[\u300c\u300d\u300e\u300f\u201c\u201d]/g,"");
+    t=t.replace(/[\u25cf\u25cb\u25aa\u2022\u2013\u2014]/g,",");
     t=t.replace(/\s+/g," ").trim();
     return t;
   }
@@ -3438,15 +3486,18 @@ if('serviceWorker' in navigator){
   function render(){
     var host=document.getElementById("xz-root"); if(!host) return;
     var nfav=favs().length;
-    var head='<div class="xz-head"><div class="xz-ava">✨</div><div><div class="xz-hname">'+esc(UI.name)+'</div><div class="xz-hrole">'+esc(UI.role)+'</div></div>'
-      +'<button class="xz-star'+(st.view==="favs"?" on":"")+'" onclick="'+(st.view==="favs"?"xzBackChat()":"xzShowFavs()")+'">'+(st.view==="favs"?"💬":"★"+(nfav?'<i>'+nfav+'</i>':""))+'</button>'
-      +'<button class="xz-x" onclick="xzClose()">✕</button></div>';
     if(st.view==="favs"){
-      host.innerHTML=head+voiceBar()
-        +'<div class="xz-body" id="xz-body"><div class="xz-favhead">★ '+esc(UI.favTitle)+'</div>'+favHTML()+'</div>'
+      var favHead='<div class="xz-head"><button class="xz-back" onclick="xzBackChat()">\u2039 '+esc(UI.back)+'</button>'
+        +'<div class="xz-hname" style="margin-left:2px;">\u2605 '+esc(UI.favTitle)+'</div>'
+        +'<button class="xz-x" onclick="xzClose()">✕</button></div>';
+      host.innerHTML=favHead+voiceBar()
+        +'<div class="xz-body" id="xz-body">'+favHTML()+'</div>'
         +'<div class="xz-note">'+esc(UI.note)+'</div>';
       return;
     }
+    var head='<div class="xz-head"><div class="xz-ava">✨</div><div><div class="xz-hname">'+esc(UI.name)+'</div><div class="xz-hrole">'+esc(UI.role)+'</div></div>'
+      +'<button class="xz-star" onclick="xzShowFavs()">★'+(nfav?'<i>'+nfav+'</i>':'')+'</button>'
+      +'<button class="xz-x" onclick="xzClose()">✕</button></div>';
     var body="";
     st.msgs.forEach(function(m,i){ body+=msgHTML(m,i); });
     if(st.busy) body+='<div class="xz-typing">✨ '+esc(UI.typing)+'</div>';
