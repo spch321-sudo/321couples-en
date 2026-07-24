@@ -635,7 +635,7 @@
   .xz-mask{position:fixed;inset:0;z-index:80;background:rgba(60,20,35,.5);backdrop-filter:blur(2px);
     display:none;align-items:flex-end;justify-content:center;}
   .xz-mask.on{display:flex;}
-  .xz-panel{width:100%;max-width:560px;height:88vh;background:linear-gradient(180deg,#FFF7F2,#FDEEF0);
+  .xz-panel{width:100%;max-width:560px;height:88vh;max-height:88vh;min-height:0;background:linear-gradient(180deg,#FFF7F2,#FDEEF0);
     border-radius:20px 20px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -8px 30px rgba(120,30,60,.25);}
   .xz-head{display:flex;align-items:center;gap:11px;padding:14px 16px;background:linear-gradient(135deg,#C9426B,#9B2D50);color:#fff;}
   .xz-ava{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:21px;flex:0 0 auto;}
@@ -646,7 +646,7 @@
   .xz-voicebar .vlbl{font-size:12px;font-weight:800;color:#9B2D50;}
   .xz-vbtn{border:1px solid #E3A9BA;background:#fff;color:#9B2D50;border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;}
   .xz-vbtn.on{background:linear-gradient(135deg,#C9426B,#9B2D50);color:#fff;border-color:#9B2D50;}
-  .xz-body{flex:1;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch;}
+  .xz-body{flex:1;min-height:0;overflow-y:auto;padding:14px;-webkit-overflow-scrolling:touch;}
   .xz-msg{display:flex;gap:9px;margin-bottom:13px;align-items:flex-start;}
   .xz-msg.u{flex-direction:row-reverse;}
   .xz-b{max-width:80%;padding:10px 13px;border-radius:15px;font-size:15px;line-height:1.66;white-space:pre-wrap;word-break:break-word;}
@@ -764,9 +764,15 @@
     padding:9px 12px;font-size:14px;line-height:1.55;font-family:inherit;cursor:pointer;}
   .ex-chip:active{background:#FBE4E9;}
   .ex-lbl{font-size:12.5px;color:var(--ink-soft);margin:-4px 0 8px;}
-  .xz-back{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:999px;
-    padding:7px 13px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
-  .xz-back:active{background:rgba(255,255,255,.32);}
+  .xz-back{background:#fff;border:none;color:#9B2D50;border-radius:999px;
+    padding:8px 15px;font-size:14.5px;font-weight:900;cursor:pointer;font-family:inherit;
+    box-shadow:0 2px 8px rgba(0,0,0,.18);flex:0 0 auto;}
+  .xz-back:active{background:#FBE4E9;}
+  .xz-star{margin-left:auto;flex:0 0 auto;background:#fff;border:none;color:#9B2D50;min-width:38px;height:36px;
+    border-radius:999px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;padding:0 11px;
+    display:inline-flex;align-items:center;gap:3px;box-shadow:0 2px 8px rgba(0,0,0,.18);}
+  .xz-star i{font-style:normal;font-size:12px;font-weight:800;}
+  .xz-star:active{background:#FBE4E9;}
 </style>
 </head>
 <body>
@@ -3495,9 +3501,8 @@ if('serviceWorker' in navigator){
         +'<div class="xz-note">'+esc(UI.note)+'</div>';
       return;
     }
-    var head='<div class="xz-head"><div class="xz-ava">✨</div><div><div class="xz-hname">'+esc(UI.name)+'</div><div class="xz-hrole">'+esc(UI.role)+'</div></div>'
-      +'<button class="xz-star" onclick="xzShowFavs()">★'+(nfav?'<i>'+nfav+'</i>':'')+'</button>'
-      +'<button class="xz-x" onclick="xzClose()">✕</button></div>';
+    var head='<div class="xz-head"><button class="xz-back" onclick="xzClose()">\u2039 '+esc(UI.back)+'</button><div class="xz-ava">✨</div><div><div class="xz-hname">'+esc(UI.name)+'</div><div class="xz-hrole">'+esc(UI.role)+'</div></div>'
+      +'<button class="xz-star" onclick="xzShowFavs()">★'+(nfav?'<i>'+nfav+'</i>':'')+'</button></div>';
     var body="";
     st.msgs.forEach(function(m,i){ body+=msgHTML(m,i); });
     if(st.busy) body+='<div class="xz-typing">✨ '+esc(UI.typing)+'</div>';
