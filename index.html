@@ -2708,7 +2708,7 @@ document.getElementById('group-back').addEventListener('click',closeGroup);
 try{ updateBrand(); }catch(e){ console.error("updateBrand failed:",e); }
 
 /* ============ text size ============ */
-function getFontScale(){ return store.get('fontScale')||'1.15'; }
+function getFontScale(){ return store.get('fontScale')||'1'; }
 function applyFontScale(s){ document.body.style.zoom = (s && s!=='1') ? s : ''; }
 function renderFontSeg(){
   const seg=document.getElementById('font-seg'); if(!seg) return;
