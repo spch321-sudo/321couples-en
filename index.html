@@ -753,8 +753,8 @@
   .rh-chev{flex:0 0 auto;margin-left:auto;width:30px;height:30px;border-radius:50%;border:1.5px solid #D9BC6E;background:rgba(255,255,255,.55);
     color:#8A6200;font-size:16px;line-height:1;cursor:pointer;transition:transform .25s ease;font-family:inherit;}
   .ringhero .ringprog{margin-top:14px;}
-  .ringhero .rh-body{overflow:hidden;max-height:3000px;opacity:1;transition:max-height .35s ease,opacity .3s ease,margin-top .3s ease;margin-top:2px;}
-  .ringhero.collapsed .rh-body{max-height:0;opacity:0;margin-top:0;pointer-events:none;}
+  .ringhero .rh-body{overflow:hidden;opacity:1;transition:opacity .28s ease,margin-top .28s ease;margin-top:2px;}
+  .ringhero.collapsed .rh-body{max-height:0;opacity:0;margin-top:0;pointer-events:none;transition:opacity .28s ease,max-height 0s linear .28s,margin-top .28s ease;}
   .ringhero.collapsed .rh-chev{transform:rotate(-90deg);}
   .ringhero.collapsed .ringprog{margin-bottom:2px;}
   .rh-msgwrap{margin:16px 0 8px;}
@@ -3618,7 +3618,7 @@ if('serviceWorker' in navigator){
     body.querySelectorAll(".note").forEach(function(n){ wrapEl(n,topic,UI.noteRef); });
     body.querySelectorAll(".kcard > p").forEach(function(p){ wrapEl(p,topic,""); });
     applyMarks(); };
-  function applyMarks(){ var a=all(); document.querySelectorAll("#d-body .sen").forEach(function(sp){ var r=a[sp.dataset.sid]; sp.className="sen"; if(r){ if(r.c) sp.classList.add("hl-"+r.c); if(r.note&&r.note.trim()) sp.classList.add("hasnote"); } }); }
+  function applyMarks(){ var a=all(); document.querySelectorAll("#d-body .sen, #ringmap .sen").forEach(function(sp){ var r=a[sp.dataset.sid]; sp.className="sen"; if(r){ if(r.c) sp.classList.add("hl-"+r.c); if(r.note&&r.note.trim()) sp.classList.add("hasnote"); } }); }
 
   /* ---------- 句子動作面板 ---------- */
   function ensureMask(id,cls){ var m=document.getElementById(id); if(!m){ m=document.createElement("div"); m.id=id; m.className=cls; m.addEventListener("click",function(e){ if(e.target===m){ if(id==="an-mask") closeSheet(); else m.classList.remove("on"); } }); document.body.appendChild(m);} return m; }
@@ -3826,7 +3826,7 @@ if('serviceWorker' in navigator){
   window.annoShareKey=function(k){ var r=all()[k]; if(r) genCard(r); };
 
   /* ---------- 事件：點句子 ---------- */
-  document.addEventListener("click",function(e){ var s=e.target.closest&&e.target.closest("#d-body .sen"); if(s){ e.stopPropagation(); annoOpenSheet(s.dataset.sid, s.textContent, s.dataset.ref, Number(s.dataset.topic)||0); } },true);
+  document.addEventListener("click",function(e){ var s=e.target.closest&&e.target.closest("#d-body .sen, #ringmap .sen"); if(s){ e.stopPropagation(); annoOpenSheet(s.dataset.sid, s.textContent, s.dataset.ref, Number(s.dataset.topic)||0); } },true);
 
 
   /* ---------- 每課筆記：錄音 + 美圖 + 彙整入口 ---------- */
