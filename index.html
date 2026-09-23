@@ -718,10 +718,10 @@
   .hlsheet-acts2 .btn.danger{color:#B0345A;border-color:#B0345A;}
   /* ---------- read-along ---------- */
   .sen.tts-reading{
-    border-radius:5px;
-    box-shadow: inset 0 0 0 999px var(--rose-tint), 0 0 0 2px var(--rose);
+    border-radius:4px;
+    box-shadow: inset 0 0 0 999px var(--rose-tint);
     -webkit-box-decoration-break:clone; box-decoration-break:clone;
-    transition: box-shadow .25s ease;
+    transition: box-shadow .22s ease;
   }
 
   /* ---------- 想更深？ ---------- */
@@ -3994,12 +3994,14 @@ if('serviceWorker' in navigator){
   window.annoWrapMsg=function(topic){
     var body=document.getElementById("msg-body-"+topic); if(!body) return;
     var base=100000+topic*10000, k=0;
-    function wrapNode(el,ref){ var txt=el.textContent; if(!txt||!txt.trim()) return;
+    function wrapNode(el,ref,kind){ var txt=el.textContent; if(!txt||!txt.trim()) return;
       var sens=splitSen(txt); if(!sens.length) return; var h="";
-      sens.forEach(function(x){ var sid="m"+topic+"_"+(base+(k++)); h+='<span class="sen" data-sid="'+sid+'" data-ref="'+escA(ref)+'" data-topic="'+topic+'">'+escH(x)+'</span>'; });
+      sens.forEach(function(x){ var sid="m"+topic+"_"+(base+(k++)); h+='<span class="sen" data-sid="'+sid+'" data-ref="'+escA(ref)+'" data-topic="'+topic+'"'+(kind?' data-kind="'+kind+'"':'')+'>'+escH(x)+'</span>'; });
       el.innerHTML=h; }
+    body.querySelectorAll("h4").forEach(function(h){ wrapNode(h,UI.msgRef,"h1"); });
+    body.querySelectorAll("h5").forEach(function(h){ wrapNode(h,UI.msgRef,"h2"); });
     body.querySelectorAll("p").forEach(function(p){ wrapNode(p,UI.msgRef); });
-    body.querySelectorAll(".ms").forEach(function(p){ wrapNode(p,UI.msgScr); });
+    body.querySelectorAll(".ms").forEach(function(p){ wrapNode(p,UI.msgScr,"scr"); });
     body.querySelectorAll(".mb").forEach(function(p){ wrapNode(p,UI.msgRef); });
     applyMarks();
   };
@@ -4090,15 +4092,33 @@ if('serviceWorker' in navigator){
     setTimeout(function(){ try{ w.scrollIntoView({behavior:"smooth",block:"start"}); }catch(e){} },80);
   };
   function plain(ti){ var d=(MSG&&MSG[String(ti)])||[]; return d.map(function(x){ return x[1]; }).join("\n"); }
-  window.msgSpeak=function(ti){
+  window.msgSpeak=function(ti,__retry){
     var btn=document.getElementById("msg-spk-"+ti);
     if(state.spk){ msgStop(); return; }
     if(typeof window.xzSpeakAlong!=="function"){ return; }
     var body=document.getElementById("msg-body-"+ti);
-    if(body){ Array.prototype.forEach.call(body.querySelectorAll("details.deeper"),function(d){ d.open=true; }); }
-    var items=[];
-    if(body){ Array.prototype.forEach.call(body.querySelectorAll(".sen"),function(s){
-      var t=s.textContent; if(t&&t.trim()) items.push({text:t,el:s}); }); }
+    // Guard against the race where 🔊 is tapped before the async gzip-decompressed
+    // content has finished loading/wrapping: msg-body-<ti> (or MSG itself) may not
+    // exist yet. Rather than silently falling back to one unhighlighted chunk, open
+    // (or wait for) the content first, then retry once it's actually ready.
+    if(!body||!MSG){
+      __retry=(__retry||0)+1;
+      if(__retry>60){ return; } // ~6s safety timeout, give up quietly
+      // Only trigger opening ourselves if nothing is already loading (avoids a
+      // second msgToggle call landing after the first has already opened the
+      // panel, which would toggle it closed again).
+      if(__retry===1 && !loading && typeof window.msgToggle==="function") window.msgToggle(ti);
+      setTimeout(function(){ window.msgSpeak(ti,__retry); },100);
+      return;
+    }
+    Array.prototype.forEach.call(body.querySelectorAll("details.deeper"),function(d){ d.open=true; });
+    var items=[]; var __scrN=0;
+    Array.prototype.forEach.call(body.querySelectorAll(".sen"),function(s){
+      var t=s.textContent; if(!t||!t.trim()) return;
+      // Scripture gets a natural spoken lead-in (TTS-only — the on-screen text is
+      // untouched) so it doesn't launch straight into the verse with no transition.
+      if(s.dataset.kind==="scr"){ t=['Scripture says, ','As the Bible says, ',"God's Word says, ",'As it is written, '][__scrN % ['Scripture says, ','As the Bible says, ',"God's Word says, ",'As it is written, '].length]+t; __scrN++; }
+      items.push({text:t,el:s}); });
     if(!items.length){ items=[{text:plain(ti),el:null}]; }
     state.spk=true; if(btn){ btn.classList.add("on"); btn.innerHTML="⏹ "+esc(MUI.stop); }
     window.xzSpeakAlong(items, null, function(){
