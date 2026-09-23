@@ -3772,12 +3772,21 @@ if('serviceWorker' in navigator){
       +'<div class="an-lbl">'+escA(UI.noteLbl)+'</div>'
       +'<textarea class="an-ta" id="an-ta" placeholder="'+escA(UI.notePh)+'" oninput="annoNoteInput()">'+escH(r.note||"")+'</textarea>'
       +'<div class="an-recbar">'+audioRow+'</div>'
-      +'<div class="an-actions"><button class="an-btn an-share grow" onclick="annoShare()">🖼 '+escA(UI.makeCard)+'</button></div>'
+      +'<div class="an-actions"><button class="an-btn an-share grow" onclick="annoShare()">🖼 '+escA(UI.makeCard)+'</button>'
+      +'<button class="an-btn an-ask grow" onclick="annoAskXz()">✨ '+escA("Ask Xiaozhi")+'</button></div>'
       +'<div class="an-hint">'+escA(UI.hint)+'</div>'
       +'</div></div>';
   }
   window.annoColor=function(c){ var r=currentRec(); r.c=c||null; r.topic=A.curTopic; r.ref=A.curRef; r.text=A.curText; r.ts=Date.now(); put(A.cur,r); applyMarks(); renderSheet(); };
   window.annoNoteInput=function(){ var ta=document.getElementById("an-ta"); if(!ta) return; var r=currentRec(); r.note=ta.value; r.topic=A.curTopic; r.ref=A.curRef; r.text=A.curText; r.ts=Date.now(); put(A.cur,r); applyMarks(); };
+  window.annoAskXz=function(){
+    var r=currentRec();
+    var ta=document.getElementById("an-ta"); var note=ta?ta.value:(r.note||"");
+    r.note=note; r.topic=A.curTopic; r.ref=A.curRef; r.text=A.curText; r.ts=Date.now(); put(A.cur,r);
+    var q="I'm reading 321 Couples Growth Camp, and I highlighted this line: "+"「"+A.curText+"」。"+(note?("My reflection: "+"「"+note+"」。"):"")+"Please help me understand what this line means for me more deeply, and help me keep my focus on Jesus.";
+    closeSheet();
+    try{ if(typeof window.xzOpen==="function") window.xzOpen(); if(typeof window.xzAsk==="function") window.xzAsk(q); }catch(e){}
+  };
   window.annoCloseSheet=function(){ closeSheet(); };
   function closeSheet(){ stopRecIfAny(); var m=document.getElementById("an-mask"); if(m) m.classList.remove("on"); }
 
