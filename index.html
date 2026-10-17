@@ -4418,6 +4418,7 @@ if('serviceWorker' in navigator){
       + '#d-body .sen.gxhl-on:not(.tts-reading){box-shadow:none!important}#d-body .sen.hasnote::after,#d-body .sen.hasnote::before{display:none!important}'
       + '#d-body .hl-note{display:none!important}#d-body .sen{cursor:pointer}'
       + '[id^="msg-body-"] .sen.tts-reading,#d-body .sen.tts-reading{background:rgba(232,196,90,.45)!important;border-radius:4px}'
+      + '[id^="msg-body-"] .sen:not(.gxhl-on):not(.tts-reading){background:none!important;box-shadow:none!important}[id^="msg-body-"] .sen.gxhl-on:not(.tts-reading){box-shadow:none!important}[id^="msg-body-"] .sen.hasnote::after,[id^="msg-body-"] .sen.hasnote::before{display:none!important}[id^="msg-body-"] .hl-note{display:none!important}[id^="msg-body-"] .sen{cursor:pointer}'
       + '.msg-bar .msg-btn.gx-stop{margin-left:4px}';
     var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
     var CM = { y: 'gold', r: 'pink', g: 'green', b: 'blue', p: 'purple' };
@@ -4445,7 +4446,7 @@ if('serviceWorker' in navigator){
         });
       },
       readFrom: function (el) {
-        var body = document.getElementById('d-body'); if (!body || typeof window.xzSpeakAlong !== 'function') return;
+        var body = rootOf(el); if (!body || typeof window.xzSpeakAlong !== 'function') return;
         var all = Array.prototype.slice.call(body.querySelectorAll('.sen')), i = all.indexOf(el), items = [];
         for (var j = Math.max(0, i); j < all.length; j++) { var t = all[j].textContent; if (t && t.trim()) items.push({ text: t, el: all[j] }); }
         try { if (window.gxMsgStop) gxMsgStop(); } catch (e) {}
@@ -4453,20 +4454,31 @@ if('serviceWorker' in navigator){
       }
     };
     var tm = 0;
-    function att() { try { var b = document.getElementById('d-body'); if (b && b.querySelector('.sen') && window.GXA && GXA.hl) GXA.hl.attach(b, opt); } catch (e) {} }
+    function rootOf(el) { return (el && el.closest && (el.closest('#d-body') || el.closest('[id^="msg-body-"]'))) || document.getElementById('d-body'); }
+    function att(r) { try { var b = r || document.getElementById('d-body'); if (b && b.querySelector('.sen') && window.GXA && GXA.hl) GXA.hl.attach(b, opt); } catch (e) {} }
     function onlyNotes(nl) { for (var j = 0; j < nl.length; j++) { var x = nl[j]; if (!(x.nodeType === 1 && x.classList && x.classList.contains('gxhl-note'))) return false; } return true; }
     try { new MutationObserver(function (ms) {
       for (var i = 0; i < ms.length; i++) { if (onlyNotes(ms[i].addedNodes) && onlyNotes(ms[i].removedNodes)) continue; clearTimeout(tm); tm = setTimeout(att, 40); return; }
     }).observe(document.getElementById('d-body') || document.body, { childList: true, subtree: true }); } catch (e) {}
     /* 點句子：搶在原本兩套畫線之前接手 */
     window.addEventListener('click', function (e) {
-      var s = e.target && e.target.closest && e.target.closest('#d-body .sen');
+      var s = e.target && e.target.closest && e.target.closest('#d-body .sen,[id^="msg-body-"] .sen');
       if (!s) return;
       try { var sel = window.getSelection && window.getSelection(); if (sel && String(sel).length > 1) return; } catch (x) {}
       e.stopImmediatePropagation(); e.stopPropagation(); e.preventDefault();
-      att(); try { GXA.hl.tap(s); } catch (x) {}
+      var rt = rootOf(s); att(rt); try { GXA.hl.tap(s); } catch (x) {}
     }, true);
     window.annoOpenSheet = function () {};
+    /* 得勝七金環總覽（首頁，不在 #d-body 裡）的講章也用同一套畫線面板 */
+    window.applyMsgMarks = function (topic) {
+      var b = document.getElementById('msg-body-' + topic); if (!b) return;
+      b.querySelectorAll('.sen[data-hl]').forEach(function (x) { x.removeAttribute('data-hl'); x.removeAttribute('data-color'); });
+      b.querySelectorAll('.hl-note').forEach(function (x) { x.parentNode.removeChild(x); });
+      var rt = rootOf(b.querySelector('.sen') || b);
+      if (rt === document.getElementById('d-body') && !(b.closest && b.closest('#d-body'))) rt = b;
+      var tries = 0;
+      (function go() { if (window.GXA && GXA.hl) att(rt); else if (tries++ < 40) setTimeout(go, 100); })();
+    };
   })();
   /* ── 講章朗讀：開始／暫停／繼續／結束；暫停停在那一句（保留標示），繼續從那一句接著念 ── */
   (function () {
