@@ -3314,7 +3314,7 @@ try{ renderFollowupList(); }catch(e){ console.error("renderFollowupList failed:"
 /* ============ PWA offline registration ============ */
 if('serviceWorker' in navigator){
   (function(){var brand=document.querySelector('.brandbar');if(!brand)return;var caret=document.createElement('div');caret.className='bcaret';caret.setAttribute('aria-hidden','true');caret.innerHTML='<span class="bcg">\u2304</span>';brand.appendChild(caret);var KEY='brandCollapsed';try{if(localStorage.getItem(KEY)==='1')brand.classList.add('collapsed');}catch(e){}brand.addEventListener('click',function(){var c=brand.classList.toggle('collapsed');try{localStorage.setItem(KEY,c?'1':'0');}catch(e){}});})();
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).catch(()=>{}));
 }
 
 </script>
@@ -4399,26 +4399,117 @@ if('serviceWorker' in navigator){
     var g = pg.querySelector('.greet'); var c = toolCard();
     if (g && g.nextSibling) pg.insertBefore(c, g.nextSibling); else pg.appendChild(c);
   });
-  /* 自動更新：回到 App、每 30 分鐘檢查；有新版而且沒在朗讀、錄音、做美圖時就重新載入 */
+  /* ── 自動更新（321 App 規格）：三道保險
+       ① version.json 輪詢（不吃快取）② Service Worker 更新 ③ 新 SW 啟用時通知並帶回背景中的舊頁面。
+       朗讀、錄音錄影、美圖、小智回答或打字中不打斷，只顯示更新條，空閒後自動套用。
+       防無限重整：同一新版先一般更新一次，仍是舊檔就硬更新一次，再不行只顯示更新條。
+       硬更新只清這個 App 自己的快取與 SW（同網域還有其他 321 App）。 ── */
   (function () {
-    if (!('serviceWorker' in navigator)) return;
-    var pending = false, had = !!navigator.serviceWorker.controller;
+    var APPVER = 'v32.202610180455', PFX = 'couples321-en-', S = {"newVer": "A new version is ready — tap to update", "updating": "Updating to the new version…", "upToDate": "You have the latest version", "netErr": "No connection — please try again later", "ver": "Version", "check": "Check for updates", "hard": "Force update", "hint": "When a new version is published, the app updates itself the next time you open or return to it."};
+    window.APPVER = APPVER;
+    var UPD = { reg: null, target: '', pending: false };
+    function now() { return Date.now(); }
+    function ssGet(k) { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } }
+    function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+    function say(m) {
+      var t = document.getElementById('upd-toast');
+      if (!t) { t = document.createElement('div'); t.id = 'upd-toast'; t.className = 'upd-toast'; document.body.appendChild(t); }
+      t.textContent = m; t.classList.add('on'); clearTimeout(say.tm); say.tm = setTimeout(function () { t.classList.remove('on'); }, 2400);
+    }
     function busy() {
-      try { if (document.querySelector('.gxs-ov.on, .gxroot .gxs, #gxaroot .on')) return true; } catch (e) {}
+      try { if (document.querySelector('.gxs-ov.on, .gxroot .gxs, #gxaroot .on, #gxbs, .rw-mask')) return true; } catch (e) {}
       try { if (window.speechSynthesis && speechSynthesis.speaking) return true; } catch (e) {}
-      try { var au = document.querySelectorAll('audio'); for (var i = 0; i < au.length; i++) if (!au[i].paused) return true; } catch (e) {}
+      try { var au = document.querySelectorAll('audio,video'); for (var i = 0; i < au.length; i++) if (!au[i].paused) return true; } catch (e) {}
+      try { var a = document.activeElement; if (a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && /text|search|^$/.test(a.type || ''))) && a.value) return true; } catch (e) {}
+      try { if (window.MediaRecorder && window.__recOn) return true; } catch (e) {}
       return false;
     }
-    function tryReload() { if (!pending) return; if (busy()) { setTimeout(tryReload, 20000); return; } location.reload(); }
-    function check() {
-      navigator.serviceWorker.getRegistration().then(function (r) {
-        if (!r) return navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' });
-        return r.update();
-      }).catch(function () {});
+    function bar(on) {
+      var b = document.getElementById('updbar');
+      if (!on) { if (b) b.parentNode.removeChild(b); return; }
+      if (!b) { b = document.createElement('div'); b.id = 'updbar'; b.className = 'updbar'; b.onclick = function () { apply(false); }; document.body.appendChild(b); }
+      b.textContent = S.newVer;
     }
-    navigator.serviceWorker.addEventListener('controllerchange', function () { if (!had) { had = true; return; } pending = true; setTimeout(tryReload, 1500); });
-    document.addEventListener('visibilitychange', function () { if (!document.hidden) check(); else if (pending && !busy()) location.reload(); });
-    setTimeout(check, 4000); setInterval(check, 30 * 60 * 1000);
+    function fresh() { if (window.__reloading) return; window.__reloading = 1; location.replace(location.pathname + '?u=' + now() + location.hash); }
+    function apply(hard) {
+      bar(false); say(S.updating);
+      ssSet('updTry', UPD.target || 'x');
+      if (!hard && UPD.reg) {
+        try { if (UPD.reg.waiting) UPD.reg.waiting.postMessage('skip'); UPD.reg.update(); } catch (e) {}
+        setTimeout(fresh, 900); return;
+      }
+      ssSet('updHard', UPD.target || 'x');
+      var done = 0, fin = function () { if (!done) { done = 1; fresh(); } };
+      try {
+        if (window.caches && caches.keys) caches.keys().then(function (ks) {
+          return Promise.all(ks.filter(function (k) { return k.indexOf(PFX) === 0; }).map(function (k) { return caches['delete'](k); }));
+        })['catch'](function () {});
+        if (UPD.reg) UPD.reg.unregister().then(function () { setTimeout(fin, 300); }, fin);
+      } catch (e) {}
+      setTimeout(fin, 1500);
+    }
+    function onNew(v) {
+      if (!v || v === APPVER) return;
+      UPD.target = v;
+      if (busy()) { UPD.pending = true; bar(true); setTimeout(idle, 20000); return; }
+      if (ssGet('updHard') === v) { bar(true); return; }
+      apply(ssGet('updTry') === v);
+    }
+    function idle() { if (!UPD.pending) return; if (busy()) { setTimeout(idle, 20000); return; } UPD.pending = false; onNew(UPD.target); }
+    function verFetch(ok, fail) {
+      var x = new XMLHttpRequest();
+      x.open('GET', 'version.json?t=' + now(), true);
+      try { x.setRequestHeader('Cache-Control', 'no-cache'); } catch (e) {}
+      x.timeout = 15000;
+      x.onload = function () { if (x.status >= 200 && x.status < 300) { try { return ok(JSON.parse(x.responseText)); } catch (e) {} } if (fail) fail(); };
+      x.onerror = x.ontimeout = function () { if (fail) fail(); };
+      x.send();
+    }
+    function check(manual) {
+      if (navigator.onLine === false) { if (manual) say(S.netErr); return; }
+      try { if (UPD.reg) UPD.reg.update(); } catch (e) {}
+      verFetch(function (j) {
+        if (j && j.v && j.v !== APPVER) { if (manual) { UPD.target = j.v; apply(false); } else onNew(j.v); }
+        else if (manual) say(S.upToDate);
+      }, function () { if (manual) say(S.netErr); });
+    }
+    window.cplCheckUpdate = function () { check(1); };
+    window.cplHardUpdate = function () { UPD.target = UPD.target || 'manual'; apply(true); };
+    /* 樣式＋「我們」頁底的版本列 */
+    var st = document.createElement('style');
+    st.textContent = '.updbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:9999;background:#8E2A4B;color:#fff;padding:10px 18px;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-weight:600;white-space:nowrap;cursor:pointer;font-size:15px}'
+      + '.upd-toast{position:fixed;left:50%;bottom:calc(140px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);background:#2A2224;color:#fff;padding:9px 16px;border-radius:12px;font-size:15px;opacity:0;transition:.25s;z-index:10000;pointer-events:none;max-width:86vw;text-align:center}.upd-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}'
+      + '.cpl-ver{margin:18px 4px 8px;padding:14px 16px;border:1px solid rgba(0,0,0,.08);border-radius:14px;background:rgba(255,255,255,.6);font-size:15px}'
+      + '.cpl-ver .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.cpl-ver b{margin-right:auto}'
+      + '.cpl-ver button{border:1px solid rgba(142,42,75,.35);background:#fff;color:#8E2A4B;border-radius:999px;padding:6px 14px;font-size:14px;white-space:nowrap}'
+      + '.cpl-ver p{margin:8px 0 0;opacity:.7;font-size:13px;line-height:1.6}';
+    document.head.appendChild(st);
+    try {
+      var us = document.getElementById('page-us');
+      if (us && !document.getElementById('cpl-ver')) {
+        var d = document.createElement('div'); d.id = 'cpl-ver'; d.className = 'cpl-ver';
+        d.innerHTML = '<div class="row"><b>' + S.ver + ' ' + APPVER + '</b><button type="button" onclick="cplCheckUpdate()">' + S.check + '</button><button type="button" onclick="cplHardUpdate()">' + S.hard + '</button></div><p>' + S.hint + '</p>';
+        us.appendChild(d);
+      }
+    } catch (e) {}
+    if (!/^https?:/.test(location.protocol)) return;
+    if (/[?&]u=\d+/.test(location.search) && history.replaceState) { try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {} }
+    if ('serviceWorker' in navigator) {
+      var sw = navigator.serviceWorker;
+      sw.register('sw.js', { updateViaCache: 'none' }).then(function (reg) {
+        UPD.reg = reg;
+        var track = function (w) { if (w) w.addEventListener('statechange', function () { if (w.state === 'installed' && sw.controller) check(0); }); };
+        track(reg.installing); track(reg.waiting);
+        reg.addEventListener('updatefound', function () { track(reg.installing); });
+      })['catch'](function () {});
+      sw.addEventListener('message', function (e) { var d = e.data || {}; if (d.t === 'sw-updated' && d.v && d.v !== APPVER) onNew(d.v); });
+      sw.addEventListener('controllerchange', function () { if (UPD.target && !busy()) fresh(); });
+    }
+    setTimeout(function () { check(0); }, 2500);
+    setInterval(function () { check(0); }, 30 * 60 * 1000);
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') check(0); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) check(0); });
+    window.addEventListener('online', function () { check(0); });
   })();
 
   /* ── 畫線默想：和《321互動聖經》一模一樣。專題內容與講章逐字稿都用同一套（點一句畫金線、再點開「這一句」面板）；

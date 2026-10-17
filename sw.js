@@ -1,67 +1,64 @@
-/* 321 夫妻成長營 — 英文版
+/* 321 夫妻成長營 — English
    部署網址：https://spch321-sudo.github.io/321couples-en/
-   Service Worker v28：HTML 改為「網路優先」，改版後家人一開就是新版，不會再卡舊畫面。
-   快取名稱加上語言代碼（en），避免三個語言版本（繁/簡/英）共用同一個 github.io
-   網域時，彼此的快取清除動作互相影響。
-   只快取成功的回應，避免偶發的失敗回應被誤存進快取。
-   ※ 每次改版只要把下面的版本號 +1（v27 → v28），並上傳這個檔案即可。 */
-const CACHE = 'couples321-en-v31-gx10180500';
-const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
+   Service Worker（自動更新版，依 321 App 規格）
+   ‧ VER 每次發佈都不同 → 瀏覽器發現 sw.js 改變就安裝新 SW
+   ‧ install：skipWaiting；預載用 cache:'reload' 繞過 GitHub Pages 約 10 分鐘的 HTTP 快取
+   ‧ activate：只刪這個 App 自己的舊快取（同網域還有其他 321 App）、clients.claim，
+     通知所有頁面有新版；背景中的舊頁面直接重新導向到新版（連沒有更新程式的舊版頁面也會換新）
+   ‧ fetch：網頁、JS、JSON 網路優先（no-cache），離線才用快取；圖示快取優先；
+     version.json 永不快取；影音與 Range 請求不攔截
+   ※ 每次改版：index.html 的 APPVER、這裡的 VER、version.json 三處要一致。 */
+var VER = 'v32.202610180455';
+var PFX = 'couples321-en-';
+var CACHE = PFX + VER;
+var SHELL = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
 
-self.addEventListener('install', e => {
+self.addEventListener('install', function (e) {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(() => {}));
+  e.waitUntil(caches.open(CACHE).then(function (c) {
+    return Promise.all(SHELL.map(function (u) {
+      return fetch(new Request(u, { cache: 'reload' })).then(function (r) { if (r && r.ok) return c.put(u, r); })['catch'](function () {});
+    }));
+  }));
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k.indexOf('couples321-en-') === 0 && k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
+self.addEventListener('activate', function (e) {
+  e.waitUntil(caches.keys().then(function (ks) {
+    return Promise.all(ks.filter(function (k) { return k.indexOf(PFX) === 0 && k !== CACHE; }).map(function (k) { return caches['delete'](k); }));
+  }).then(function () { return self.clients.claim(); }).then(function () {
+    return self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  }).then(function (cs) {
+    cs.forEach(function (c) {
+      try { c.postMessage({ t: 'sw-updated', v: VER }); } catch (x) {}
+      if (c.visibilityState === 'hidden' && c.navigate) { try { c.navigate(c.url); } catch (x) {} }
+    });
+  }));
 });
 
-self.addEventListener('message', e => {
-  if (e.data === 'SKIP_WAITING') self.skipWaiting();
-});
+self.addEventListener('message', function (e) { if (e.data === 'skip' || e.data === 'SKIP_WAITING') self.skipWaiting(); });
 
-function isHTML(req) {
-  return req.mode === 'navigate' ||
-         (req.headers.get('accept') || '').indexOf('text/html') > -1;
-}
-
-/* 只快取「真的成功」的回應，避免把偶發的錯誤頁面存進快取 */
-function cachePut(req, res) {
-  if (res && res.ok) {
-    const copy = res.clone();
-    caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
-  }
-  return res;
-}
-
-self.addEventListener('fetch', e => {
-  const req = e.request;
-  if (req.method !== 'GET') return;
-
-  /* 外部連結（Zoom、晨讀321…）一律交給瀏覽器，不攔截 */
-  let url;
-  try { url = new URL(req.url); } catch (err) { return; }
-  if (url.origin !== self.location.origin) return;
-
-  /* 網頁本身：網路優先 → 拿得到新版就用新版，離線才回快取 */
-  if (isHTML(req)) {
-    e.respondWith(
-      fetch(req).then(res => cachePut(req, res))
-        .catch(() => caches.match(req).then(hit => hit || caches.match('./index.html')))
-    );
+self.addEventListener('fetch', function (e) {
+  var r = e.request; if (r.method !== 'GET') return;
+  var u; try { u = new URL(r.url); } catch (x) { return; }
+  if (u.origin !== self.location.origin) return;
+  var p = u.pathname;
+  if (/\.(mp3|m4a|aac|wav|ogg|opus|mp4|mov|webm)$/i.test(p) || r.headers.get('range')) return;
+  if (/version\.json$/.test(p)) {
+    e.respondWith(fetch(p + '?t=' + Date.now(), { cache: 'no-store' })['catch'](function () { return new Response('{}', { headers: { 'Content-Type': 'application/json' } }); }));
     return;
   }
-
-  /* 圖示等靜態檔：先給快取（快），同時背景更新（新） */
-  e.respondWith(
-    caches.match(req).then(hit => {
-      const net = fetch(req).then(res => cachePut(req, res)).catch(() => hit);
-      return hit || net;
-    })
-  );
+  var nav = r.mode === 'navigate' || /\.html$/.test(p) || /\/$/.test(p);
+  var key = nav ? './index.html' : (/\.(json|js|webmanifest|css)$/.test(p) ? u.origin + p : r);
+  if (nav || /\.(json|js|css|webmanifest)$/.test(p)) {
+    e.respondWith(fetch(nav ? u.origin + p + u.search : r.url, { cache: 'no-cache', credentials: 'same-origin' }).then(function (resp) {
+      if (resp && resp.ok) { var cp = resp.clone(); caches.open(CACHE).then(function (c) { c.put(key, cp); }); }
+      return resp;
+    })['catch'](function () {
+      return caches.match(key).then(function (h) { return h || caches.match(r, { ignoreSearch: true }).then(function (h2) { return h2 || caches.match('./index.html'); }); });
+    }));
+    return;
+  }
+  e.respondWith(caches.match(r, { ignoreSearch: true }).then(function (h) {
+    return h || fetch(r).then(function (resp) { if (resp && resp.ok) { var cp = resp.clone(); caches.open(CACHE).then(function (c) { c.put(r, cp); }); } return resp; });
+  }));
 });
