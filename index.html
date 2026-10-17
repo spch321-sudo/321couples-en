@@ -2768,18 +2768,37 @@ try{ updateBrand(); }catch(e){ console.error("updateBrand failed:",e); }
 
 /* ============ text size ============ */
 function getFontScale(){ return store.get('fontScale')||'1'; }
-function applyFontScale(s){ document.body.style.zoom = (s && s!=='1') ? s : ''; }
+window.cplFs=function(s){
+  s=parseFloat(s)||1;
+  var r=document.getElementById('gxaroot'); if(!r && window.GXA_root){ try{ r=GXA_root(); }catch(e){} } if(!r) return;
+  r.style.zoom = s!==1 ? String(1/s) : '';
+  r.style.setProperty('--fs', Math.round(18*s)+'px');
+};
+function applyFontScale(s){ document.body.style.zoom = (s && s!=='1') ? s : ''; try{ window.cplFs(s); }catch(e){} }
 function renderFontSeg(){
-  const seg=document.getElementById('font-seg'); if(!seg) return;
   const cur=getFontScale();
-  seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.s===cur));
+  document.querySelectorAll('#font-seg, #font-seg-home').forEach(seg=>{
+    seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.s===cur));
+  });
 }
-document.getElementById('font-seg').addEventListener('click',e=>{
+function onFontSeg(e){
   const b=e.target.closest('button'); if(!b) return;
   store.set('fontScale', b.dataset.s);
   applyFontScale(b.dataset.s);
   renderFontSeg();
-});
+}
+document.getElementById('font-seg').addEventListener('click',onFontSeg);
+(function(){
+  const src=document.getElementById('font-seg'), home=document.getElementById('page-home');
+  if(!src||!home||document.getElementById('font-seg-home')) return;
+  const c=document.createElement('div'); c.className='dashcard homefont';
+  c.innerHTML='<div class="form-lbl" style="margin:0 0 10px;font-size:17px">🔤 Text size</div>'
+    +'<div class="seg" id="font-seg-home" style="margin:0">'+src.innerHTML+'</div>';
+  if(!document.getElementById('hfcss')){ const st=document.createElement('style'); st.id='hfcss'; st.textContent='#font-seg-home{display:flex;gap:8px}#font-seg-home button{flex:1 1 0;min-width:0;word-break:keep-all;overflow-wrap:normal;line-height:1.25;padding-left:6px;padding-right:6px}'; document.head.appendChild(st); }
+  const g=home.querySelector('.greet');
+  if(g&&g.nextSibling) home.insertBefore(c,g.nextSibling); else home.appendChild(c);
+  c.querySelector('#font-seg-home').addEventListener('click',onFontSeg);
+})();
 applyFontScale(getFontScale());
 try{ renderFontSeg(); }catch(e){ console.error("renderFontSeg failed:",e); }
 
@@ -4302,7 +4321,7 @@ if('serviceWorker' in navigator){
       return c ? { text: strip(c.v), ref: c.ref || '' } : { text: '', ref: '' };
     },
     ready: function (G) {
-      G.setFs(17);
+      G.setFs(18); try { window.cplFs && cplFs(getFontScale()); } catch (e) {};
       G.sage({
         system: sys,
         name: EN ? 'Sage AI' : '小智',
@@ -4322,6 +4341,7 @@ if('serviceWorker' in navigator){
   };
   /* 小智 → 新版小智（對象／長度／追問／接續／排版） */
   window.xzOpen = function () {
+    try { if (window.cplFs) cplFs(getFontScale()); } catch (e) {}
     try { if (window.xzSpeakStop) xzSpeakStop(); } catch (e) {}
     try { var m = document.getElementById('xz-mask'); if (m) m.classList.remove('on'); } catch (e) {}
     try { SAGE321.open(); } catch (e) {}
@@ -4405,7 +4425,7 @@ if('serviceWorker' in navigator){
        防無限重整：同一新版先一般更新一次，仍是舊檔就硬更新一次，再不行只顯示更新條。
        硬更新只清這個 App 自己的快取與 SW（同網域還有其他 321 App）。 ── */
   (function () {
-    var APPVER = 'v32.202610180455', PFX = 'couples321-en-', S = {"newVer": "A new version is ready — tap to update", "updating": "Updating to the new version…", "upToDate": "You have the latest version", "netErr": "No connection — please try again later", "ver": "Version", "check": "Check for updates", "hard": "Force update", "hint": "When a new version is published, the app updates itself the next time you open or return to it."};
+    var APPVER = 'v2026.1018.0517', PFX = 'couples321-en-', S = {"newVer": "A new version is ready — tap to update", "updating": "Updating to the new version…", "upToDate": "You have the latest version", "netErr": "No connection — please try again later", "ver": "Version", "check": "Check for updates", "hard": "Force update", "hint": "When a new version is published, the app updates itself the next time you open or return to it."};
     window.APPVER = APPVER;
     var UPD = { reg: null, target: '', pending: false };
     function now() { return Date.now(); }
@@ -6458,6 +6478,11 @@ ${st}請用繁體中文。只回傳 JSON，不要任何說明、不要 markdown 
 .xzact button{font-size:calc(var(--fs,17px)*.74)}
 .xzq button{font-size:calc(var(--fs,17px)*.85)}
 .xzcath{margin:12px 2px 6px}
+.gxroot .xzcard{max-height:88vh;max-height:88dvh}
+.gxroot .xzb{padding:12px 8px}
+.gxroot .xzm.assistant{max-width:100%;padding-left:13px;padding-right:13px}
+.gxroot .xzm.user{max-width:90%}
+.gxroot .xzh{padding-left:12px;padding-right:12px}
 .xzh .xzback{font-weight:700;color:var(--pine,#1F4D3D);padding-left:2px;white-space:nowrap}
 .xzh .xztochat{font-weight:700;color:var(--pine,#1F4D3D);white-space:nowrap}
 .xzcat{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
