@@ -4257,12 +4257,15 @@ if('serviceWorker' in navigator){
   var CPL = window.__CPL || {};
   var FMT_ZH = '\n\n【回答格式（請照這個排版）】\n用二到四個簡短的小標題（以「## 」開頭）分段，每段二到四句；很短的回答可以不用小標題。全篇最重要的一句用「> 」開頭單獨成一行（只標一句），這一句會被做成美圖。關鍵字詞可用 **粗體**；列舉時用「- 」條列，每項一句；只有對照時才用 markdown 表格（最多三欄）。不要用程式碼區塊、表情符號或唸不出來的裝飾符號。';
   var FMT_EN = '\n\n[Answer format — please follow]\nUse two to four short headings (starting with "## ") with two to four sentences each; a very short answer may skip headings. Put the single most important sentence on its own line starting with "> " (only one) — it becomes a shareable picture. You may bold key words; use "- " for lists; use a markdown table (max three columns) only when comparing. No code blocks, emoji or decorative symbols.';
+  var PRAY_ZH = '\n\n【禱告的寫法（一定要照做）】回答裡凡要寫禱告，那一段的小標題一律寫「憑信心禱告」，不要寫「為你禱告」「我為你禱告」或「一起禱告」。禱告前先用一句話邀請讀者自己開口，例如「請你憑信心，親口向主這樣禱告：」。禱告本身要用讀者的第一人稱，寫成讀者自己向神說的話（用「我」；夫妻一起時用「我們」），例如「主耶穌，我把這份重擔交給你……」；不要寫成小智替讀者禱告，不要出現「這位」「他／她」「求你幫助他」這類第三人稱。禱告要簡短、真誠、帶著信心交託與感恩，結尾一律用「奉主耶穌的名禱告，阿們。」';
+  var PRAY_ZS = '\n\n【祷告的写法（一定要照做）】回答里凡要写祷告，那一段的小标题一律写「凭信心祷告」，不要写「为你祷告」「我为你祷告」或「一起祷告」。祷告前先用一句话邀请读者自己开口，例如「请你凭信心，亲口向主这样祷告：」。祷告本身要用读者的第一人称，写成读者自己向神说的话（用「我」；夫妻一起时用「我们」），例如「主耶稣，我把这份重担交给你……」；不要写成小智替读者祷告，不要出现「这位」「他／她」「求你帮助他」这类第三人称。祷告要简短、真诚、带着信心交托与感恩，结尾一律用「奉主耶稣的名祷告，阿们。」';
+  var PRAY_EN = "\n\n[How to write a prayer — always follow] Whenever your answer includes a prayer, title that section \"Pray in Faith\" (never \"A Prayer for You\" or \"Let me pray for you\"). Introduce it with one line inviting the reader to pray it themselves, e.g. \"In faith, pray this to the Lord in your own words:\" Write the prayer in the reader's own first person (\"I\"; \"we\" for a couple), as their own words to God, e.g. \"Lord Jesus, I bring this burden to You...\" Never pray on the reader's behalf or refer to them as \"he/she\" or \"this person\". Keep it short, sincere, full of faith, surrender and thanks, and always end with \"In the name of the Lord Jesus we pray, Amen.\"";
   function sys() {
     var s = '';
     try { s = CPL.sys ? CPL.sys() : ''; } catch (e) {}
     s = String(s || '').split('\n').filter(function (ln) { return !/Markdown|markdown|表格|\btables?\b/.test(ln); }).join('\n');
     if (LG === 'zs') s += '\n\n請一律用简体中文回答。';
-    return s + (EN ? FMT_EN : FMT_ZH);
+    return s + (EN ? FMT_EN : FMT_ZH) + (EN ? PRAY_EN : (LG === 'zs' ? PRAY_ZS : PRAY_ZH));
   }
   function strip(h) { var d = document.createElement('div'); d.innerHTML = String(h || '').replace(/<li>/g, '<li>・').replace(/<br\s*\/?>/g, ' '); return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
   var gxList = [];

@@ -5,7 +5,7 @@
    網域時，彼此的快取清除動作互相影響。
    只快取成功的回應，避免偶發的失敗回應被誤存進快取。
    ※ 每次改版只要把下面的版本號 +1（v27 → v28），並上傳這個檔案即可。 */
-const CACHE = 'couples321-en-v29-gx10180440';
+const CACHE = 'couples321-en-v30-gx10180455';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png', './icon-512-maskable.png'];
 
 self.addEventListener('install', e => {
